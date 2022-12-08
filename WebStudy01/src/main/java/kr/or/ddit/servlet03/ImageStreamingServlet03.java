@@ -29,7 +29,7 @@ public class ImageStreamingServlet03 extends HttpServlet {
 		});
 		
 //		req.setAttribute("imageFiles", imageFiles);
-		
+		 
 		String accept = req.getHeader("Accept");
 		if(accept.contains("json")) {
 			// if문 타면 gson 사용해야함 json데이터이므로
