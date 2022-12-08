@@ -53,6 +53,44 @@
 	%>
 	resourcePath : <%=resourcePath %>
 	
+	***웹자원에 대한 식별성
+	URI(Uniform Resource Identifier)
+	
+	URL(Uniform Resource Locator)
+	URN(Uniform Resource Name)
+	URC(Uniform Resource Content)
+	
+	URL 구조
+	protocol(scheme)://IP:port/context/depth1...depthN/resourceName
+	
+	DomainName
+	3 level www.naver.com GlobalToplevelDomain : GTLD
+	4 level www.naver.co.kr
+	
+	URL 표기 방식
+	절대경로(**) : 최상위 루트부터 전체 경로 표현
+		client side : /webStudy01/resources/images/cat1.jpg
+               : context path 부터 시작됨.
+		server side : /resources/images/cat1.jpg
+               : context path 이후의 경로 표기.
+
+	상대경로 : 기준점(브라우저의 현재 주소)을 중심으로 경로 표현
+<%
+// 	InputStream is2 = application.getResourceAsStream("/resources/images/cat1.jpg");
+	String realPath1 = application.getRealPath("/resources/images/cat1.jpg");
+	String realPath2 = application.getRealPath(request.getContextPath() + "/resources/images/cat1.jpg");
+
+	request.getRequestDispatcher("/WEB-INF/view/depth1/test.jsp").forward(request, response);
+	response.sendRedirect(request.getContextPath() + "/member/memberForm.do");
+
+%>
+	
 </pre>
+<img src="/WebStudy01/resources/images/cat8.jpg"/>
+<img src="<%=request.getContextPath() %>/resources/images/cat1.jpg"/>
+<img src="cat1.jpg"/>
+<%-- 서버사이드 방식으로 접근한 파일의 크기 : <%=is2.available() %> --%>
+realPath1 : <%=realPath1 %> <br/>
+realPath1 : <%=realPath1 %>
 </body>
 </html>
