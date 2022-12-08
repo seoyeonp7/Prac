@@ -17,6 +17,12 @@
 		<th>value</th>
 	</tr>
 </thead>
+<tbody>
+	<tr>
+		<th></th>
+		<th></th>
+	</tr>
+</tbody>
 
 </table>
 <script>
@@ -24,7 +30,16 @@
 		dataType : "json",
 		success : function(resp) {
 			resp['prop1']
-			resp.prop1
+			
+			let options = [];
+            $.each(resp, function (index, file) {
+               let option = $("<option>")
+                        .addClass(file.mime)   
+                        .html(file.name);
+               options.push(option);
+            });
+            SELECTTAG.append(options);
+            
 		},
 		error : function(jqXHR, status, error) {
 			console.log(jqXHR);
