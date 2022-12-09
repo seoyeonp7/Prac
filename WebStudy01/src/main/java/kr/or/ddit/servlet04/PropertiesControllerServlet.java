@@ -13,57 +13,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
 import kr.or.ddit.servlet01.DescriptionServlet;
+import kr.or.ddit.servlet04.serviece.PropertiesServiceImpl;
+import kr.or.ddit.servlet04.serviece.PropertiesServiece;
 
 @WebServlet("/03/props/propsView.do")
 public class PropertiesControllerServlet extends HttpServlet{
+	private PropertiesServiece service = new PropertiesServiceImpl();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String accept = req.getHeader("Accept");
-		if(accept.toLowerCase().contains("json")) {
-			// native(DataStore.properties)->json: marshalling
-//			{"prop1":"value",...}
-			
-			//가져오기
-			Properties properties = new Properties();
-			try(
-				InputStream is = DescriptionServlet.class.getResourceAsStream("/kr/or/ddit/props/DataStore.properties");
-			){
-				properties.load(is);
-				System.out.println(properties.getProperty("prop1"));
-				Enumeration<Object> en = properties.keys();
-				//marshalling
-				StringBuffer json = new StringBuffer();
-				
-				json.append("[");
-				String ptrn = "\"%s\":\"%s\"";
-				while (en.hasMoreElements()) {
-					Object key = (Object) en.nextElement();
-					Object value = properties.get(key);
-					json.append("{");
-					json.append(String.format(ptrn,"key",key));
-					json.append(",");
-					json.append(String.format(ptrn,"value",value));
-					json.append("}");
-					json.append(",");
-					json.append("]");
-				}
-				int lastIndex = json.lastIndexOf(",");
-				if(lastIndex!=-1) 
-					json.deleteCharAt(lastIndex);
-				resp.setContentType("application/json;charset=UTF-8");
-				try(
-					PrintWriter out = resp.getWriter();
-				){
-					out.print(json.toString());
-				}
-			}
-			
-			
-		} else {
-			String path = "/WEB-INF/views/03/propsView.jsp";
-			req.getRequestDispatcher(path).forward(req, resp);
-		}
+		String accept = req.getHeader("Accept"); //1.요청 분석
 		
+		Object target = service.retrieveData(); //2.모델 확보
+		req.setAttribute("target", target); //3.모델 공유
+		
+		String path = null;
+		
+		//4.뷰를 선택
+		if(accept.startsWith("*/*") || accept.toLowerCase().contains("html")) {
+			path = "/WEB-INF/views/03/propsView.jsp";
+		} else if(accept.toLowerCase().contains("json")) {
+			path = "/jsonView.do";
+		} else if(accept.toLowerCase().contains("xml")) {
+			path = "/xmlView.do";
+		} 
+		req.getRequestDispatcher(path).forward(req, resp); //5.뷰로 이동
 	}
 }
