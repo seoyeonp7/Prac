@@ -1,11 +1,13 @@
-/build/
 /bin/
+
+/classes/
+/test-classes/
 .classpath
 .project
 .settings/
 
-# Created by https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,java,eclipse
+# Created by https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,eclipse,java
 
 ### Eclipse ###
 .metadata
@@ -87,6 +89,7 @@ local.properties
 .mtj.tmp/
 
 
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
@@ -117,4 +120,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
+# End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
