@@ -18,6 +18,11 @@ public class DivisorTest {
             }
         }
 //        Collections.sort(list);
+//        Iterator<Integer> iter = list.iterator();
+//        while(iter.hasNext()){
+//            int a = iter.next();
+//            answer +=a;
+//        }
         answer = list.stream().mapToInt(i->i).sum();
 
     }
