@@ -40,7 +40,7 @@ public class PropertiesControllerServlet extends HttpServlet{
 			path = "/jsonView.do";
 		} else if(accept.toLowerCase().contains("xml")) {
 			path = "/xmlView.do";
-		} 
+		}  
 		req.getRequestDispatcher(path).forward(req, resp); //5.뷰로 이동
 	}
 } 
