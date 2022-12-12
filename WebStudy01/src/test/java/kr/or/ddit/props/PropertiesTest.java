@@ -69,7 +69,9 @@ public class PropertiesTest {
 //				}
 //			}
 //	}
-
+	
+	//프로퍼티스 데이터 자체에 집중해야 하면 : propterties api를 사용
+	//의미를 파악해야 하면 : 로케일 사용할 수 있는 리소스 번들을 사용
 	@Test
 	public void testResourceBundle() {
 //		2.ResourceBundle

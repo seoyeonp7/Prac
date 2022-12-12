@@ -18,16 +18,14 @@
 <button type="button" class="LoadData">LOAD DATA</button>
 <button type="button" class="clearData">CLEAR DATA</button>
 <table>
-<thead>
-	<tr>
-		<th>key</th>
-		<th>value</th>
-	</tr>
-</thead>
-<tbody id="listBody">
-
-</tbody>
-
+	<thead>
+		<tr>
+			<th>key</th>
+			<th>value</th>
+		</tr>
+	</thead>
+	<tbody id="listBody">
+	</tbody>
 </table>
 <script>
 	let listBody = $("#listBody");

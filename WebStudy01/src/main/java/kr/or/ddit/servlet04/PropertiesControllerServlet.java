@@ -28,7 +28,7 @@ public class PropertiesControllerServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String accept = req.getHeader("Accept"); //1.요청 분석
 		
-		Object target = service.retrieveData(); //2.모델 확보
+		Object target = service.retrieveData(); //2.모델 확보(service와의 의존관계 형성)
 		req.setAttribute("target", target); //3.모델 공유
 		
 		String path = null;
@@ -40,7 +40,7 @@ public class PropertiesControllerServlet extends HttpServlet{
 			path = "/jsonView.do";
 		} else if(accept.toLowerCase().contains("xml")) {
 			path = "/xmlView.do";
-		}  
+		}
 		req.getRequestDispatcher(path).forward(req, resp); //5.뷰로 이동
 	}
 } 
