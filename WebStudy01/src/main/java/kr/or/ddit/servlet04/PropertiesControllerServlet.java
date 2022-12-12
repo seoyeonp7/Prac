@@ -43,4 +43,4 @@ public class PropertiesControllerServlet extends HttpServlet{
 		} 
 		req.getRequestDispatcher(path).forward(req, resp); //5.뷰로 이동
 	}
-}
+} 
