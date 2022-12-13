@@ -57,7 +57,7 @@ public class GetMessageControllerServlet extends HttpServlet {
          viewName = "/WEB-INF/views/04/plainView.jsp";
       }else {
          statusCode = HttpServletResponse.SC_NOT_ACCEPTABLE;
-      }
+      } 
       
       if(statusCode==HttpServletResponse.SC_OK) {
 //      5. 뷰로 이동

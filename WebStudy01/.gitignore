@@ -1,11 +1,15 @@
 /build/
 /bin/
+
+.settings/
+/classes/
+/test-classes/
 .classpath
 .project
-.settings/
 
-# Created by https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,java,eclipse
+
+# Created by https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,eclipse,java
 
 ### Eclipse ###
 .metadata
@@ -117,4 +121,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
+# End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java

@@ -17,7 +17,7 @@
 </label>
 <button type="button" class="LoadData">LOAD DATA</button>
 <button type="button" class="clearData">CLEAR DATA</button>
-<table>
+<table border="1">
 	<thead>
 		<tr>
 			<th>key</th>
