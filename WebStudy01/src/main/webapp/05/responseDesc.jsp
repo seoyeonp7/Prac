@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" buffer="7kb"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,7 @@
 <pre>
 	Http의 response packaging
 	1.Response Line : Status Code(응답상태코드, XXX)
-		100~ : ...ING...
+		100~ : ...ING... (웹소켓..)
 		200~ : OK
 		300~ : 최종 처리하기 위해 클라이언트의 추가 액션이 필요함. 성공도 아니고 실패도 아니야. response body가 없음.
 			304(cache data관련) : Not Modified 
@@ -46,10 +46,10 @@
 		Content(Body)에 대한 부가정보 설정 : Content-*, Content-Type(MIME), Content-Length(size),
 									Content-Disposition(content name, 첨부여부)
 		Auto Request : 주기적으로 갱신되는 자원에 대한 자동 요청	
-		<%
+		<%--
 			response.setHeader("Content-Disposition", "inline[attatchement];filename=\"파일명\"");
 			
-		%>
+		--%>
 		Cache control : 자원에 대한 캐싱 설정 
 		Location 기반의 이동 구조.(Redirectioin).
 	
