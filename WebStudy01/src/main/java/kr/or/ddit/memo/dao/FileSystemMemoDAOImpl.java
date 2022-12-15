@@ -36,7 +36,6 @@ public class FileSystemMemoDAOImpl implements MemoDAO {
 			System.err.println(e.getMessage());
 			this.memoTable = new HashMap<>();
 		}
-		
 	}
 	
 	@Override
@@ -67,5 +66,4 @@ public class FileSystemMemoDAOImpl implements MemoDAO {
 			throw new RuntimeException(e);
 		}
 	}
-
 }
