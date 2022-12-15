@@ -45,7 +45,7 @@ public class MemoControllerServlet extends HttpServlet{
 		
 		dao.insertMemo(memo);
 		System.out.println("메모 인서트됨");
-		resp.sendRedirect(req.getContextPath()+"/memo");
+		resp.sendRedirect(req.getContextPath()+"/memo"); 
 	}
 	
 	private MemoVO getMemoFromRequest(HttpServletRequest req) {
