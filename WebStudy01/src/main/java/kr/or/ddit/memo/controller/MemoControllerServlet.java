@@ -1,5 +1,6 @@
 package kr.or.ddit.memo.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import kr.or.ddit.memo.dao.FileSystemMemoDAOImpl;
 import kr.or.ddit.memo.dao.MemoDAO;
@@ -38,26 +43,42 @@ public class MemoControllerServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //		Post-Redirect-Get : PRG pattern
 		req.setCharacterEncoding("UTF-8");
-		System.out.println("doPost");
-		MemoVO memo = getMemoFromRequest(req);
-		System.out.println("writer:"+memo.getWriter());
-		System.out.println("date:"+memo.getDate());
+		System.out.println("doPost: " +req);
 		
-		dao.insertMemo(memo);
-		System.out.println("메모 인서트됨");
-		resp.sendRedirect(req.getContextPath()+"/memo"); 
+		MemoVO memo = getMemoFromRequest(req);
+//		dao.insertMemo(memo);
+		resp.sendRedirect(req.getContextPath()+"/memo");
 	}
 	
-	private MemoVO getMemoFromRequest(HttpServletRequest req) {
-		String writer = req.getParameter("writer");
-		String date = req.getParameter("date");
-		String content = req.getParameter("content");
+	private MemoVO getMemoFromRequest(HttpServletRequest req) throws IOException {
+		//1.역직렬화
+		//2.언마샬링
 		
-		MemoVO memo = new MemoVO();
-		memo.setWriter(writer);
-		memo.setDate(date);
-		memo.setContent(content);
+		String contentType = req.getContentType();
+		MemoVO memo = null;
+		if(contentType.contains("json")) {
+			try(
+				BufferedReader br = req.getReader();//body content read용 입력 스트림
+					){
+				memo = new ObjectMapper().readValue(br, MemoVO.class);
+				return memo;
+			}
+		} else if(contentType.contains("xml")) {
+			try(
+				BufferedReader br = req.getReader();//body content read용 입력 스트림
+					){
+				memo = new XmlMapper().readValue(br, MemoVO.class);
+				return memo;
+			}
+		} else { //파라미터로 옴
+			//getParameter
+			memo = new MemoVO();
+			memo.setWriter(req.getParameter("writer"));
+			memo.setDate(req.getParameter("date"));
+			memo.setContent(req.getParameter("content"));
+		}
 		return memo;
+		
 	}
 
 	@Override

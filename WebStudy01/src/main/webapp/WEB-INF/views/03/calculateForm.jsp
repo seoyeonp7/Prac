@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.enumpkg.OperatorType"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -6,25 +7,58 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="<%=request.getContextPath() %>/resources/js/jquery-3.6.1.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/custom.js"></script>
 </head>
 <body>
 <input type="radio" name="dataType" value="json"/>JSON
 <input type="radio" name="dataType" value="xml"/>XML
-<form method="post">
+<form method="post" id="calForm">
 	<input type="number" name="leftOp" placeholder="좌측피연산자"/>
 	<select name="operator">
-		<option value="PLUS">+</option>
-		<option value="MINUS">-</option>
-		<option value="MULTIPLY">*</option>
-		<option value="DIVIDE">/</option>
+		<%
+			OperatorType[] operators = OperatorType.values();
+			for(OperatorType tmp : operators){
+				%>
+				<option value="<%=tmp.name()%>"><%=tmp.getSign() %></option>
+				<%
+			}
+		
+		%>
 	</select>
 	<input type="number" name="rightOp" placeholder="우측피연산자"/>
-	<button type="button">=</button>
+	<button type="submit">=</button>
 </form>
 <div id="resultArea">
-	2 + 2 = 4
-	location.href
-	CalculateServlet
+	
 </div>
+<script>
+	let resultArea = $('#resultArea');
+	$('#calForm').on("submit",function(event){
+		event.preventDefault();
+		let url = this.action;
+		let method = this.method;
+		let data = $(this).serializeObject();
+		data.leftOp = parseInt(data.leftOp);
+		data.rightOp = parseInt(data.rightOp);
+		
+		$.ajax({
+			url : url,
+			method : method,
+			contentType:"application/json",
+			data : JSON.stringify(data),
+			dataType : "json",
+			success : function(resp) {
+				resultArea.html(resp.expression);13
+			},
+			error : function(jqXHR, status, error) {
+				console.log(jqXHR);
+				console.log(status);
+				console.log(error);
+			}
+		});
+		
+		return false;
+	})
+</script>
 </body>
 </html>

@@ -66,4 +66,16 @@ public class FileSystemMemoDAOImpl implements MemoDAO {
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Override
+	public int updateMemo(MemoVO memo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteMemo(int code) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

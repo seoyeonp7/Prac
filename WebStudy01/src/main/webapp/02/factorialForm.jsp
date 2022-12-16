@@ -13,10 +13,10 @@
       let resultArea = $("#resultArea");
       $("form[name]").on("submit", function(event){
          event.preventDefault();
-         console.log($(this));
-         console.log(this);
-         console.log($(this)[0]);
-         console.log($(this).get(0));
+         console.log("$(this)"+$(this));
+         console.log("this"+this);
+         console.log("$(this)[0]"+$(this)[0]);
+         console.log("$(this).get(0)"+$(this).get(0));
          let url = this.action;
          let method = this.method;
          let data = $(this).serialize();

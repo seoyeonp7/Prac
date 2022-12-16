@@ -35,5 +35,4 @@ public class MemoVO implements Serializable {
 	public String toString() {
 		return "MemoVO [code=" + code + ", writer=" + writer + ", content=" + content + ", date=" + date + "]";
 	}
-	
 }
