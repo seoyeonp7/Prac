@@ -36,7 +36,7 @@
 	$('#calForm').on("submit",function(event){
 		event.preventDefault();
 		let url = this.action;
-		let method = this.method;
+		let method = this.method; 
 		let data = $(this).serializeObject();
 		data.leftOp = parseInt(data.leftOp);
 		data.rightOp = parseInt(data.rightOp);
