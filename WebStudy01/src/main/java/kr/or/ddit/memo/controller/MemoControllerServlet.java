@@ -43,10 +43,10 @@ public class MemoControllerServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //		Post-Redirect-Get : PRG pattern
 		req.setCharacterEncoding("UTF-8");
-		System.out.println("doPost: " +req);
+		System.out.println("doPost");
 		
 		MemoVO memo = getMemoFromRequest(req);
-//		dao.insertMemo(memo);
+		dao.insertMemo(memo);
 		resp.sendRedirect(req.getContextPath()+"/memo");
 	}
 	
