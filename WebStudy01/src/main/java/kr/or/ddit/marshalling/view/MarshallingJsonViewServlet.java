@@ -41,4 +41,4 @@ public class MarshallingJsonViewServlet extends HttpServlet {
 			mapper.writeValue(out, target); //마샬링+직렬화
 		}
 	}
-}
+} 
