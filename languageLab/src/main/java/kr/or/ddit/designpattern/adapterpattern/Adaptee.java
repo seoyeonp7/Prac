@@ -5,3 +5,4 @@ public class Adaptee {
 		System.out.println("Adaptee 명령에 대한 처리를 수행했음");
 	}
 }
+ 
