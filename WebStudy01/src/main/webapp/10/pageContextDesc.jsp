@@ -36,10 +36,10 @@ CAC(Context Aware Computing) 상황인식컴퓨터이론
 	Scope : 웹 어플리케이션에서 데이터를 공유하기 위해 사용되는 저장 공간.(Map&lt;String,Object&gt;)
 	Attribute :  scope를 통해 공유되는 데이터.(String name/Object value).
 	
-	: Scope라는 저장 공간을 소유한 기본 객체의 생명주기와 동일함.
+	: Scope라는 저장 공간을 소유한 기본 객체의 생명주기와 동일함.(scope = 자료구조 = 저장공간)
 	page scope : pageContext의 소유 공간. 현재 페이지에서만 공유 가능 영역
 	request scope : 해당 영역의 소유 요청 객체가 소멸될 때 함께 소멸됨.
-	session scope : 해당 영역을 소유한 세션 객체와 생명주기 동일.
+	session scope : 해당 영역을 소유한 세션 객체와 생명주기 동일. (한 사람의 정보 관리)
 	application scope : ServletContext와 동일한 생명주기를 가짐.
 	
 	setAttribute(name,value), getAttribute(name), removeAttribute(name)
