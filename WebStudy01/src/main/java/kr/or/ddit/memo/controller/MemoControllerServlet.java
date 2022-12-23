@@ -14,13 +14,17 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+import kr.or.ddit.memo.dao.DataBaseMemoDAOImpl;
 import kr.or.ddit.memo.dao.FileSystemMemoDAOImpl;
 import kr.or.ddit.memo.dao.MemoDAO;
 import kr.or.ddit.vo.MemoVO;
 
 @WebServlet("/memo")
 public class MemoControllerServlet extends HttpServlet{
-	private MemoDAO dao = FileSystemMemoDAOImpl.getInstance();
+	
+//	private MemoDAO dao = FileSystemMemoDAOImpl.getInstance(); 
+	private MemoDAO dao = DataBaseMemoDAOImpl.getInstance(); //구현체 만들기
+	//하드코딩 되어있으므로 결합력 늘어난다. (private MemoDAO dao; <-이렇게 쓰려면 컨테이너 필요: Spring)
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -78,7 +82,6 @@ public class MemoControllerServlet extends HttpServlet{
 			memo.setContent(req.getParameter("content"));
 		}
 		return memo;
-		
 	}
 
 	@Override

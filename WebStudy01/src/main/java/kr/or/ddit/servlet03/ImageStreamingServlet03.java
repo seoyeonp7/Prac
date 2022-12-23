@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +45,7 @@ public class ImageStreamingServlet03 extends HttpServlet {
 			}
 		} else {
 			// 1. UI 제공 요청.
-			String viewName = "/WEB-INF/views/02/imageFrom_ajax.jsp";
+			String viewName = "/WEB-INF/views/02/imageForm_ajax.jsp";
 			req.getRequestDispatcher(viewName).forward(req, resp);
 		}
 	}
