@@ -17,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 5. 객체의 상태 확인 방법 제공 : toString
  * 6. 객체 직렬화 가능
  * 
+ * 회원관리를 위한 Domain Layer
+ * 
  */
 public class MemberVO implements Serializable {
 	private String memId;
