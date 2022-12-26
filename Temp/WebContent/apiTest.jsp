@@ -13,7 +13,7 @@
 #centerAddr {display:block;margin-top:2px;font-weight: normal;}
 .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 </style>
-</head>
+</head> 
 <body>
 
 <div class="map_wrap">
