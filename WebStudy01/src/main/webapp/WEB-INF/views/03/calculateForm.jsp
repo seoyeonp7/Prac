@@ -48,7 +48,7 @@
 			data : JSON.stringify(data),
 			dataType : "json",
 			success : function(resp) {
-				resultArea.html(resp.expression);13
+				resultArea.html(resp.expression);
 			},
 			error : function(jqXHR, status, error) {
 				console.log(jqXHR);
