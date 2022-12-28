@@ -1,10 +1,7 @@
 package kr.or.ddit.member.controller;
 
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,69 +11,71 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.exception.UserNotFoundException;
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.memo.controller.MemoControllerServlet;
 import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.validate.InsertGroup;
+import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.ValidationUtils;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/member/memberInsert.do")
-public class MemberInsertControllerServlet extends HttpServlet{
+@WebServlet("/member/memberUpdate.do")
+public class MemberUpdateControllerServlet extends HttpServlet {
 	MemberService service = new MemberServiceImpl();
-	private static final Logger log = LoggerFactory.getLogger(MemberInsertControllerServlet.class);
+	private static final Logger log = LoggerFactory.getLogger(MemberUpdateControllerServlet.class);
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String viewName = "/WEB-INF/views/member/memberForm.jsp";
+		//수정 폼 제공
 		
-		if(viewName.startsWith("redirect:")) {
-	         viewName = viewName.substring("redirect:".length());
-	         resp.sendRedirect(req.getContextPath() + viewName);
-	      }else {
-	         req.getRequestDispatcher(viewName).forward(req, resp);
-	      }
+		HttpSession session = req.getSession();
+		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
+		
+		MemberVO member = service.retrieveMember(authMember.getMemId());
+		
+		req.setAttribute("member", member);
+		
+		String viewName = "member/memberForm";
+		
+		new InternalResourceViewResolver("/WEB-INF/views/",".jsp").resolveView(viewName, req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		1. 검증 포함
 		req.setCharacterEncoding("UTF-8");
 		
-		//command object - 검증 대상
 		MemberVO member = new MemberVO();
-		req.setAttribute("member", member);
-
-		Map<String, String[]> parameterMap = req.getParameterMap();
+		req.setAttribute("member", member); // 다시 돌아갔을 때 입력 정보 유지시키기 위해
 		
 		try {
-			BeanUtils.populate(member, parameterMap);
+			BeanUtils.populate(member, req.getParameterMap());
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
+			throw new ServletException(e);
 		}
-		//MemberVO가 넘어온 모든 파라미터 갖게 됨
-		
-		//command object : 검증대상**
-//		MemberVO target = new MemberVO();
-		Map<String, List<String>> errors = new LinkedHashMap<>();
-		req.setAttribute("errors",errors);
 		
 		String viewName = null;
+
+		//검증
+		Map<String, List<String>> errors = new LinkedHashMap<>();
+		req.setAttribute("errors", errors);
 		
-		boolean valid = ValidationUtils.validate(member, errors, InsertGroup.class);
+		boolean valid = ValidationUtils.validate(member, errors, UpdateGroup.class);
 		
 		
 		if(valid) {
-			ServiceResult result = service.createMember(member);
+			ServiceResult result = service.modifyMember(member);
 			switch (result) {
 				case PKDUPLICATED:
-					req.setAttribute("message", "아이디 중복");
+					req.setAttribute("message", "비밀번호 오류");
 					viewName = "member/memberForm";
 					break;
 				case FAIL:
@@ -85,7 +84,7 @@ public class MemberInsertControllerServlet extends HttpServlet{
 					break;
 		
 				default:
-					viewName = "redirect:/";
+					viewName = "redirect:/mypage.do";
 					break;
 			}
 			
@@ -96,7 +95,8 @@ public class MemberInsertControllerServlet extends HttpServlet{
 			});
 		}
 		
-		new InternalResourceViewResolver("/WEB-INF/views/",".jsp").resolveView(viewName, req, resp);
 		
+		new InternalResourceViewResolver("/WEB-INF/views/",".jsp").resolveView(viewName, req, resp);
 	}
+
 }

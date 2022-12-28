@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.memo.controller.MemoControllerServlet;
+import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.vo.MemberVO;
 
@@ -30,13 +31,8 @@ public class MemberListControllerServlet extends HttpServlet {
 		List<MemberVO> memberList = service.retrieveMemberList();
 		req.setAttribute("memberList", memberList);
 		
-		String viewName = "/WEB-INF/views/member/memberList.jsp";
+		String viewName = "member/memberList";
 		
-		if(viewName.startsWith("redirect:")) {
-	         viewName = viewName.substring("redirect:".length());
-	         resp.sendRedirect(req.getContextPath() + viewName);
-	      }else {
-	         req.getRequestDispatcher(viewName).forward(req, resp);
-	      }
+		new InternalResourceViewResolver("/WEB-INF/views/",".jsp").resolveView(viewName, req, resp);
 	}
 }

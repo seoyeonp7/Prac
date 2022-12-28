@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/includee/preScript.jsp"/>
 </head>
 <body>
 <table border="1">
@@ -87,6 +88,21 @@
 		<th>탈퇴여부</th>
 		<td>${member.memDelete}</td>
 	</tr>
+	<!-- 선택적 렌더링 -->
+	<c:if test="${sessionScope.authMember eq member}"> 
+	<!-- equals메소드 사용한 것과 같다. MemberVO의 equals 메소드에 따라 -->
+		<tr>
+			<td colspan="2">
+			<a href="<c:url value='/member/memberUpdate.do'/>" class="btn btn-primary">수정</a>
+			<a href=# class="btn btn-danger" >탈퇴</a>
+			<form mothod="post" action="<c:url value='/member/memberDelete.do'/>">
+				<input type="password" name="memPass" />
+			</form>
+			</td>
+		</tr>
+	</c:if>
 </table>
+ 
+<jsp:include page="/includee/postScript.jsp"/>
 </body>
 </html>
