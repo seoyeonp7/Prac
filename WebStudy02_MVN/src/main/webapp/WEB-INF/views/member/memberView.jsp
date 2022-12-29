@@ -9,6 +9,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp"/>
+<c:if test="${not empty message}">
+	<script>
+		alert("${message}");
+	</script>
+	<c:remove var="message" scope="session"/> <!-- flash -->
+</c:if>
+
 </head>
 <body>
 <table border="1">
@@ -94,15 +101,88 @@
 		<tr>
 			<td colspan="2">
 			<a href="<c:url value='/member/memberUpdate.do'/>" class="btn btn-primary">수정</a>
-			<a href=# class="btn btn-danger" >탈퇴</a>
-			<form mothod="post" action="<c:url value='/member/memberDelete.do'/>">
-				<input type="password" name="memPass" />
-			</form>
+			<a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-danger" >탈퇴</a>
+			
 			</td>
 		</tr>
 	</c:if>
 </table>
- 
+<table border="1">
+	<tr>
+		<th>구매기록</th>
+		<td>
+			<table>
+				<thead>
+					<tr>
+						<th>상품아이디</th>
+						<th>상품명</th>
+						<th>분류명</th>
+						<th>거래처명</th>
+						<th>구매가</th>
+						<th>판매가</th>
+						<th>마일리지</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:set var="prodList" value="${member.prodList}"/>
+					<c:choose>
+						<c:when test="${not empty prodList}">
+							<c:forEach items="${prodList}" var="prod">
+								<tr>
+									<td>${prod.prodId}</td>
+									<td>
+										<c:url value="/prod/prodView.do" var="prodViewURL">
+											<c:param name="what" value="${prod.prodId}"></c:param>
+										</c:url>
+										<a href="${prodViewURL}">${prod.prodName}</a>
+									</td>
+									<td>${prod.lprodNm}</td>
+									<td>${prod.buyer.buyerName}</td>
+									<td>${prod.prodCost}</td>
+									<td>${prod.prodPrice}</td>
+									<td>${prod.prodMileage}</td>
+								</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td colspan="7"> 구매기록 없음. </td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+		<form method="post" action="<c:url value='/member/memberDelete.do'/>">
+			<div class="modal-body">
+				<input type="password" name="memPass" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">탈퇴</button>
+<!-- 				폼태그 안에 버튼 하나면 서밋으로 동작한다. 두개면x -->
+			</div>
+		</form>
+		</div>
+	</div>
+</div>
+<script>
+	//모달 닫혔을 때 이벤트 발생
+	$("#exampleModal").on("hidden.bs.modal", function(event){ //function: 이벤트 핸들러
+		//this:모달, form을 제이쿼리 객체로 받았음(reset 이벤트 못쓰므로 get(0)이나[0]으로 꺼냄. 제이쿼리 객체 : 배열 형태로 엘리먼트 관리)
+		$(this).find("form")[0].reset();
+	})
+</script>
 <jsp:include page="/includee/postScript.jsp"/>
 </body>
 </html>

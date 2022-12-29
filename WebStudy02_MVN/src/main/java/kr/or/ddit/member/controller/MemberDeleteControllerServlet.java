@@ -18,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.validate.DeleteGroup;
+import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.ValidationUtils;
 import kr.or.ddit.vo.MemberVO;
@@ -31,40 +33,48 @@ public class MemberDeleteControllerServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//아이디 비번 인증 -> dispatch요청구조 사용하지 않는다.
+//		1.
 		req.setCharacterEncoding("UTF-8");
 		
-		String memPass = req.getParameter("memPass");
 		
 		HttpSession session = req.getSession();
 		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
+		String memId = authMember.getMemId();
+		String memPass = req.getParameter("memPass");
+
+		MemberVO inputData = new MemberVO();
+		inputData.setMemId(memId);
+		inputData.setMemPass(memPass);
 		
+		Map<String, List<String>> errors = new LinkedHashMap<>();
+		boolean valid = ValidationUtils.validate(inputData, errors, DeleteGroup.class);
 		
 		String viewName = null;
-		Map<String, List<String>> errors = new LinkedHashMap<>();
-		boolean valid = ValidationUtils.validate(authMember, errors, DeleteGroup.class);
 		
-		if(valid && memPass.equals(authMember.getMemPass())) {
-			ServiceResult result = service.removeMember(authMember);
+		if(valid) {
+			ServiceResult result = service.removeMember(inputData);
 			switch (result) {
-				case PKDUPLICATED:
-					req.setAttribute("message", "오류");
-					viewName = "member/memberForm";
+				case INVALIDPASSWORD:
+					session.setAttribute("message", "비번 오류");
+					//인증시스템에서는 dispatch 사용하지 않는다.
+					viewName = "redirect:/mypage.do";
 					break;
 				case FAIL:
-					req.setAttribute("message", "서버에 문제 있음. 쫌따 다시 하셈.");
-					viewName = "member/memberForm";
+					session.setAttribute("message", "서버 오류. 쫌따 다시 하셈.");
+					viewName = "redirect:/mypage.do";
 					break;
-		
 				default:
+					session.invalidate();
 					viewName = "redirect:/";
 					break;
 			}
 		} else {
-			viewName = "member/memberForm";
-			errors.forEach((k,v)->{
-				log.error("{} : {}", k, v);				
-			});
+			session.setAttribute("message", "아이디나 비밀번호 누락");
+			viewName = "redirect:/mypage.do";
+			
 		}
+		
+		new InternalResourceViewResolver("/WEB-INF/views/",".jsp").resolveView(viewName, req, resp);
 		
 	}
 }

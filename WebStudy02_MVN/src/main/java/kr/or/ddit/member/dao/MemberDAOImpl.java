@@ -1,13 +1,10 @@
 package kr.or.ddit.member.dao;
 
-import java.sql.Statement;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import kr.or.ddit.memo.dao.MemoDAO;
 import kr.or.ddit.mybatis.MybatisUtils;
 import kr.or.ddit.vo.MemberVO;
 

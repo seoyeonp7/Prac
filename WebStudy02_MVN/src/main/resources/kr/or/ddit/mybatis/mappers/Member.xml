@@ -4,22 +4,51 @@
 
 	<select id="selectMemberList" resultType="MemberVO">
 		SELECT  MEM_ID, MEM_NAME, MEM_ADD1, MEM_HP
-		   , MEM_MAIL, MEM_MILEAGE                
+		   , MEM_MAIL, MEM_MILEAGE    
+		   ,(SELECT COUNT(DISTINCT CART_PROD)
+		     FROM CART
+		     WHERE CART_MEMBER = MEM_ID) CART_COUNT            
 		FROM MEMBER                               
 	</select>
-	<select id="selectMember" parameterType="String" resultType="MemberVO">
+	
+	<!-- 중첩 map 방식 -->
+	<resultMap type="MemberVO" id="memberMap" autoMapping="true">
+		<id property="memId" column="MEM_ID"/> <!-- 반드시 MemberVO가 갖는 equals와 연계되어야 함 -->
+		<collection property="prodList" ofType="ProdVO" autoMapping="true" >
+			<association property="buyer" javaType="BuyerVO" autoMapping="true" />
+		</collection>
+	</resultMap>
+	
+	<select id="selectMember" parameterType="String" resultMap="memberMap">
+		WITH CARTVIEW AS (
+			SELECT DISTINCT CART_MEMBER, CART_PROD
+			FROM CART
+		), PRODVIEW AS(
+			SELECT PROD.*
+					, LPROD_NM
+					, BUYER.*
+			FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU) 
+					  INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+		), CARTPROD AS (
+			SELECT CART_MEMBER
+				, PRODVIEW.*
+			FROM CARTVIEW INNER JOIN PRODVIEW ON (CART_PROD = PROD_ID)
+		)
 		SELECT                                                        
-        MEM_ID,     MEM_PASS,   MEM_NAME,                       
-        MEM_REGNO1, MEM_REGNO2,                                 
-        TO_CHAR(MEM_BIR, 'YYYY-MM-DD') MEM_BIR,                 
-        MEM_ZIP,    MEM_ADD1,   MEM_ADD2,                       
-        MEM_HOMETEL,    MEM_COMTEL, MEM_HP,                     
-        MEM_MAIL,   MEM_JOB,    MEM_LIKE,                       
-        MEM_MEMORIAL,                                           
-        TO_CHAR(MEM_MEMORIALDAY, 'YYYY-MM-DD') MEM_MEMORIALDAY, 
-        MEM_MILEAGE,                                            
-        MEM_DELETE                                              
-    	FROM    MEMBER                                              
+	        MEM_ID,     MEM_PASS,   MEM_NAME,                       
+	        MEM_REGNO1, MEM_REGNO2,                                 
+	        TO_CHAR(MEM_BIR, 'YYYY-MM-DD') MEM_BIR,                 
+	        MEM_ZIP,    MEM_ADD1,   MEM_ADD2,                       
+	        MEM_HOMETEL,    MEM_COMTEL, MEM_HP,                     
+	        MEM_MAIL,   MEM_JOB,    MEM_LIKE,                       
+	        MEM_MEMORIAL,                                           
+	        TO_CHAR(MEM_MEMORIALDAY, 'YYYY-MM-DD') MEM_MEMORIALDAY, 
+	        MEM_MILEAGE,                                            
+	        MEM_DELETE
+	        , PROD_ID, PROD_NAME, PROD_COST, PROD_PRICE, PROD_MILEAGE
+	        , LPROD_NM
+	        , BUYER_NAME, BUYER_ADD1, BUYER_CHARGER	                                          
+    	FROM	MEMBER	LEFT OUTER JOIN CARTPROD ON (MEM_ID = CART_MEMBER)                              
     	WHERE MEM_ID = #{memId}                                            
 	</select>
 	<insert id="insertMember" parameterType="MemberVO">
@@ -70,7 +99,7 @@
 	</insert>
 	
 	<update id="updateMember" parameterType="MemberVO">
-		UPDATE member
+		UPDATE MEMBER
 		SET
 			MEM_REGNO1 = #{memRegno1,jdbcType=CHAR}
 			, MEM_REGNO2 = #{memRegno2,jdbcType=CHAR}
@@ -88,9 +117,11 @@
 		WHERE MEM_ID = #{memId}
 	</update>
 	
-	<delete id="deleteMember">
-		delete from member
-		where mem_Id = #{memId}
+	<delete id="deleteMember" parameterType="String">
+		UPDATE MEMBER
+		SET
+		MEM_DELETE = '1'
+		WHERE MEM_ID = #{memId}
 	</delete>
 	
 	

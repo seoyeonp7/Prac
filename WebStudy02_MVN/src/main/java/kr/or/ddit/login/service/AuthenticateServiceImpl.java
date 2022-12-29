@@ -13,13 +13,13 @@ import kr.or.ddit.vo.MemberVO;
 public class AuthenticateServiceImpl implements AuthenticateService {
 	private MemberDAO memberDAO = new MemberDAOImpl();
 	
-	@Override
+	@Override 
 	public ServiceResult authenticate(MemberVO member) {
 		MemberVO savedMember = memberDAO.selectMember(member.getMemId());
-		if(savedMember==null)
+		if(savedMember==null || savedMember.isMemDelete())
 			throw new UserNotFoundException(String.format("%s 사용자 없음.", member.getMemId()));
 		String inputPass = member.getMemPass();
-		String savedPass = savedMember.getMemPass();
+		String savedPass = savedMember.getMemPass(); 
 		ServiceResult result = null;
 		if(savedPass.equals(inputPass)) {
 			//콜바이레퍼런스
