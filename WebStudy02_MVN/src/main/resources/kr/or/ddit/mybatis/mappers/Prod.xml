@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.prod.dao.ProdDAO">
+	<!-- 코드 프래그먼트 -->
+	<sql id="searchFrag">
+		<where>
+            <if test="simpleCondition neq null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleCondition.searchWord)">
+            	<choose>
+            		<when test="simpleCondition.searchType eq 'lprodNm'">
+            			INSTR(LPROD_NM,#{simpleCondition.searchWord}) > 0
+            		</when>
+            		<when test="simpleCondition.searchType eq 'buyerName'">
+            			INSTR(BUYER_NAME,#{simpleCondition.searchWord}) > 0
+            		</when>
+            		<when test="simpleCondition.searchType eq 'prodName'">
+            			INSTR(PROD_NAME,#{simpleCondition.searchWord}) > 0
+            		</when>
+            		<otherwise>
+            			INSTR(LPROD_NM,#{simpleCondition.searchWord}) > 0
+            			OR
+            			INSTR(BUYER_NAME,#{simpleCondition.searchWord}) > 0
+            			OR
+            			INSTR(PROD_NAME,#{simpleCondition.searchWord}) > 0
+            		</otherwise>
+            	</choose>
+            </if>
+		</where>
+	</sql>	
 
 	<resultMap type="ProdVO" id="prodMap" autoMapping="true">
 		<id property="prodId" column="prod_id"/> <!-- 중복 판단 기준 -->
@@ -9,6 +34,31 @@
 			<id property="memId" column="MEM_ID"/>
 		</collection>
 	</resultMap>
+	
+	<select id="selectTotalRecord" resultType="int" parameterType="PagingVO">
+		SELECT COUNT(*)
+		FROM PRODVIEW
+		<include refid="searchFrag"></include>
+	</select>
+	
+	<select id="selectProdList" resultType="ProdVO" resultMap="prodMap" ><!-- 자동으로 바인딩 했던 걸 수동으로 바인딩 하겠다~ -->
+		SELECT B.*
+	    FROM(
+	        SELECT ROWNUM RNUM,A.*
+	        FROM ( 
+	            SELECT LPROD_NM, PROD_NAME, BUYER_NAME, 
+	                PROD_COST,PROD_PRICE
+	                ,(SELECT COUNT(CART_MEMBER) 
+	                FROM CART WHERE CART_PROD=PROD_ID ) CNT
+	            FROM PRODVIEW 
+				<include refid="searchFrag"></include>
+				ORDER BY CNT DESC
+		    ) A
+		) B
+		<![CDATA[
+         WHERE RNUM >= #{startRow} AND RNUM <= #{endRow}
+        ]]>
+   </select>
 	
 	<select id="selectProd" parameterType="string" resultMap="prodMap">
 		WITH CARTVIEW AS (

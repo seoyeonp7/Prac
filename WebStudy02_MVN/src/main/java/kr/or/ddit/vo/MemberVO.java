@@ -66,6 +66,7 @@ public class MemberVO implements Serializable {
 		this.memId = memId;
 		this.memPass = memPass;
 	}
+	private int rnum;
 	
 	@NotBlank(groups = {Default.class, DeleteGroup.class})
 	private String memId;

@@ -41,6 +41,8 @@ public class ProdVO implements Serializable{
 	private Integer prodQtyin;
 	private Integer prodQtysale;
 	private Integer prodMileage;
+	private Integer cnt;
+	private int rnum;
 	
 	private Set<MemberVO> memberSet; // has many, 중복불가set
 }

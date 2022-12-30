@@ -1,49 +1,41 @@
-<%@page import="java.util.List"%>
-<%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>member/memberList.do</title>
+<title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<h4>회원목록 조회</h4>
 <table>
 	<thead>
 		<tr>
-			<th>일련번호</th>
-			<th>회원아이디</th>
-			<th>회원명</th>
-			<th>이메일</th>
-			<th>휴대폰</th>
-			<th>거주지역</th>
-			<th>마일리지</th>
-			<th>구매건수</th>
+			<td>일련번호</td>
+			<td>상품분류</td>
+			<td>상품명</td>
+			<td>거래처명</td>
+			<td>구매가</td>
+			<td>판매가</td>
+			<td>상품구매자수</td>
 		</tr>
 	</thead>
 	<tbody>
-		<c:set var="memberList" value="${pagingVO.dataList}"></c:set>
+		<c:set var="prodList" value="${pagingVO.dataList}"></c:set>
 		<c:choose>
-			<c:when test="${not empty memberList}">
-			<c:forEach items="${memberList }" var="member">
+			<c:when test="${not empty prodList}">
+			<c:forEach items="${prodList }" var="prod">
 					<tr>
-						<td>${member.rnum }</td>
-						<td>${member.memId}</td>
-						<td>
-							<c:url value="/member/memberView.do" var="viewURL">
-								<c:param name="who" value="${member.memId }" />
-							</c:url>
-							<a href="${viewURL}">${member.memName}</a>
-						</td>
-						<td>${member.memMail}</td>
-						<td>${member.memHp}</td>
-						<td>${member.memAdd1}</td>
-						<td>${member.memMileage}</td>
-						<td>${member.cartCount}</td>
+						<td>${prod.rnum }</td>
+						<td>${prod.lprodNm}</td>
+						<td>${prod.prodName}</td>
+						<td>${prod.buyer.buyerName}</td>
+						<td>${prod.prodCost}</td>
+						<td>${prod.prodPrice}</td>
+						<td>${prod.cnt}</td>
 					</tr>
 				</c:forEach>
 			</c:when>
@@ -59,10 +51,11 @@
 			<td colspan="7">
 				${pagingVO.pagingHTML }
 				<div id="searchUI">
-					<select name="searchType">
+					<select id="searchType">
 						<option value>전체</option>
-						<option value="name">이름</option>
-						<option value="address">주소1</option>
+						<option value="lprodNm">분류명</option>
+						<option value="buyerName">거래처명</option>
+						<option value="prodName">상품명</option>
 					</select>
 					<input type="text" name="searchWord" />
 					<input type="button" id="searchBtn" value="검색" />
