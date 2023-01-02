@@ -17,5 +17,5 @@ public interface ProdService {
 	 * @param pagingVO
 	 * @return 
 	 */
-	public List<ProdVO> retrieveProdList(PagingVO<ProdVO> pagingVO);
+	public void retrieveProdList(PagingVO<ProdVO> pagingVO);
 }

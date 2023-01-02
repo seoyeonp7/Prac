@@ -25,8 +25,11 @@ public class InternalResourceViewResolver implements ViewResolver {
 	public void resolveView(String viewName, HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		if(viewName.startsWith("redirect:")) {
-	         viewName = viewName.substring("redirect:".length());
-	         resp.sendRedirect(req.getContextPath() + viewName);
+			viewName = viewName.substring("redirect:".length());
+			resp.sendRedirect(req.getContextPath() + viewName);
+		}else if(viewName.startsWith("forward:")){
+			viewName = viewName.substring("forward:".length());
+			req.getRequestDispatcher(viewName).forward(req,resp);
 		}else {
 			req.getRequestDispatcher(prefix + viewName + suffix).forward(req, resp);
 		}

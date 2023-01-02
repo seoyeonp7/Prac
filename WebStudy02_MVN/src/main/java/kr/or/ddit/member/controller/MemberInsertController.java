@@ -22,30 +22,41 @@ import org.slf4j.LoggerFactory;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.AbstractController;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.ValidationUtils;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/member/memberInsert.do")
-public class MemberInsertControllerServlet extends HttpServlet{
+/**
+ * Backend controller(command handler) --> POJO(Plain Old Java Object) : 제약x
+ */
+public class MemberInsertController implements AbstractController{
 	MemberService service = new MemberServiceImpl();
-	private static final Logger log = LoggerFactory.getLogger(MemberInsertControllerServlet.class);
+	private static final Logger log = LoggerFactory.getLogger(MemberInsertController.class);
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String viewName = "/WEB-INF/views/member/memberForm.jsp";
-		
-		if(viewName.startsWith("redirect:")) {
-	         viewName = viewName.substring("redirect:".length());
-	         resp.sendRedirect(req.getContextPath() + viewName);
-	      }else {
-	         req.getRequestDispatcher(viewName).forward(req, resp);
-	      }
+	public String process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String method = req.getMethod();
+		RequestMethod requestMethod = RequestMethod.valueOf(method.toUpperCase());
+		String viewName = null;
+		if(requestMethod==requestMethod.GET) {
+			viewName = memberForm(req, resp);
+		}else if(requestMethod==requestMethod.POST){
+			viewName = insert(req, resp);
+		}else {
+			resp.sendError(405,method +"는 지원하지 않음");
+		}
+		return viewName;
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
+	public String memberForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		return "/member/memberForm";
+		
+	}
+	
+	public String insert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //		1. 검증 포함
 		req.setCharacterEncoding("UTF-8");
 		
@@ -96,7 +107,6 @@ public class MemberInsertControllerServlet extends HttpServlet{
 			});
 		}
 		
-		new InternalResourceViewResolver("/WEB-INF/views/",".jsp").resolveView(viewName, req, resp);
-		
+		return viewName;
 	}
 }

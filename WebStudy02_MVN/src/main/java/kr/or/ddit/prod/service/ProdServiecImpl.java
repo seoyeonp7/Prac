@@ -11,14 +11,11 @@ public class ProdServiecImpl implements ProdService {
 	private ProdDAO prodDAO = new ProdDAOImpl();
 	
 	@Override
-	public List<ProdVO> retrieveProdList(PagingVO<ProdVO> pagingVO) {
-		pagingVO.setTotalRecord(prodDAO.selectTotalRecord(pagingVO));
-		
-		List<ProdVO> prodList = prodDAO.selectProdList(pagingVO);
-		
-		pagingVO.setDataList(prodList);
-		
-		return prodList;
+	public void retrieveProdList(PagingVO<ProdVO> pagingVO) {
+		int totalRecord = prodDAO.selectTotalRecord(pagingVO);
+		pagingVO.setTotalRecord(totalRecord);
+		List<ProdVO> dataList = prodDAO.selectProdList(pagingVO);
+		pagingVO.setDataList(dataList);		
 	}
 	
 	@Override
@@ -28,5 +25,4 @@ public class ProdServiecImpl implements ProdService {
 			throw new RuntimeException(String.format("%s 는 없는 상품",prodId));
 		return prod;
 	}
-
 }
