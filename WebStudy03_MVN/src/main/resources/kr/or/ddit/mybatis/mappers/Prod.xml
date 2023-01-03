@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.prod.dao.ProdDAO"> 
+	<!-- 코드 프래그먼트 -->
+	<sql id="searchFrag">
+		<trim prefix=" WHERE " prefixOverrides="AND"> <!-- PREFIXOVERRIDES 잘못 들어간거 제거 -->
+		    <if test ="detailCondition neq null">
+		    	<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodLgu)">
+		    		AND PROD_LGU = #{detailCondition.prodLgu}
+		    	</if>
+		    	<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodBuyer)">
+		    		AND PROD_BUYER = #{detailCondition.prodBuyer}
+		    	</if>
+		    	<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodName)">
+		    		AND INSTR(PROD_NAME,#{detailCondition.prodName}) > 0
+		    	</if> 
+		    </if>
+	    </trim>
+	</sql>	
+
+	
+	<select id="selectTotalRecord" resultType="int" parameterType="PagingVO">
+		SELECT COUNT(*)
+		FROM PRODVIEW
+		<include refid="searchFrag" />
+	</select>
+<!-- 	<resultMap type="ProdVO" id="listMap" autoMapping="true"> -->
+<!-- 		<association property="buyer" javaType="BuyerVO"> has a, 1:1 relation -->
+<!-- 			<result property="buyerName" column="BUYER_NAME"/> 하나만 바인딩 -->
+<!-- 		</association> -->
+<!-- 	</resultMap> -->
+	<select id="selectProdList" parameterType="PagingVO" resultType="ProdVO" ><!-- 자동으로 바인딩 했던 걸 수동으로 바인딩 하겠다~ -->
+		WITH ORDEREDPROD AS(
+		    SELECT PROD_ID, PROD_NAME, PROD_COST, PROD_PRICE    
+		        , LPROD_NM
+		        , BUYER_NAME "buyer.buyerName"
+		        , (
+		            SELECT COUNT(DISTINCT CART_MEMBER) FROM CART
+		            WHERE CART_PROD = PROD_ID
+		        ) MEM_COUNT
+		    FROM PRODVIEW
+		    <include refid="searchFrag" />
+		    ORDER BY PROD_LGU, ROWID DESC
+		) 
+		SELECT A.*
+		FROM (SELECT ROWNUM RNUM, ORDEREDPROD.*
+		        FROM ORDEREDPROD
+		) A
+		WHERE RNUM BETWEEN ${startRow} AND ${endRow}
+   </select>
+   
+	<resultMap type="ProdVO" id="prodMap" autoMapping="true">
+		<id property="prodId" column="prod_id"/> <!-- 중복 판단 기준 -->
+		<association property="buyer" javaType="BuyerVO" autoMapping="true" />
+		<collection property="memberSet" ofType="MemberVO" autoMapping="true" >
+			<!-- has many 중복관계 제거 위해 id로 식별성 부여 -->
+			<id property="memId" column="MEM_ID"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectProd" parameterType="string" resultMap="prodMap">
+		WITH CARTVIEW AS (
+		    SELECT CART_PROD
+		        , MEM_ID, MEM_NAME, MEM_HP, MEM_MAIL, MEM_MILEAGE
+		    FROM CART INNER JOIN MEMBER ON (CART_MEMBER = MEM_ID)
+		)
+		SELECT
+		    prod_id,    prod_name,    prod_lgu,
+		    prod_buyer,    prod_cost,    prod_price,
+		    prod_sale,    prod_outline,    prod_detail,
+		    prod_img,    prod_totalstock,    prod_insdate,
+		    prod_properstock,    prod_size,    prod_color,
+		    prod_delivery,    prod_unit,    prod_qtyin,
+		    prod_qtysale,    prod_mileage
+		    , LPROD_NM
+		    , BUYER_NAME, BUYER_ADD1, BUYER_CHARGER
+		    , CARTVIEW.*
+		FROM PRODVIEW LEFT OUTER JOIN CARTVIEW ON (PROD_ID = CART_PROD)
+		WHERE PROD_ID = #{prodId}                       
+	</select>
+</mapper>
