@@ -83,7 +83,6 @@
 	<input type="text" name="prodName" placeholder="상품명">
 </form>
 <script>
-
 	$("[name=prodLgu]").on("change",function(){
 		let prodLgu = $(this).val();		//select태그는 this말고 $(this)로
 		prodBuyerTag.find("option:gt(0)").hide();

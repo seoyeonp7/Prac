@@ -2,6 +2,7 @@ package kr.or.ddit.prod.service;
 
 import java.util.List;
 
+import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.prod.dao.ProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
 import kr.or.ddit.vo.PagingVO;
@@ -24,5 +25,27 @@ public class ProdServiecImpl implements ProdService {
 		if(prod==null)
 			throw new RuntimeException(String.format("%s 는 없는 상품",prodId));
 		return prod;
+	}
+
+	@Override
+	public ServiceResult createProd(ProdVO prodVO) {
+		ServiceResult result = null;
+		
+		int rowcnt = prodDAO.insertProd(prodVO);
+		return result = rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+	}
+
+	@Override
+	public ServiceResult modifyProd(ProdVO prod) {
+		//존재하지 않는 경우, RuntimeException 발생. OK, FAIL
+		ProdVO inputData = new ProdVO();
+		inputData.setProdId(prod.getProdId());
+		ServiceResult result = null;
+		
+		//update
+		int rowcnt = prodDAO.updateProd(prod);
+		result = rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+		
+		return result;
 	}
 }

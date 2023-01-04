@@ -106,4 +106,6 @@ public class MemberVO implements Serializable {
 	//소문자 boolean -> db에 null값 들어있으면 알아서 false 반환, 1이면 true
 	
 	private List<ProdVO> prodList; //has many 관계(1:N)
+	
+	private String memRole;
 }

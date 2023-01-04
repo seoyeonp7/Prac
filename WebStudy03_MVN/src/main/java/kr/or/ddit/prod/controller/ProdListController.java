@@ -32,7 +32,6 @@ public class ProdListController{ //POJO
 		req.setAttribute("buyerList", othersDAO.selectBuyerList(null));
 	}
 	
-	
 	private String listUI(HttpServletRequest req) {
 		addAttribute(req);
 		return "prod/prodList";

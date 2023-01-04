@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.or.ddit.member.service.MemberServiceImpl;
-import kr.or.ddit.memo.controller.MemoControllerServlet;
+import kr.or.ddit.memo.controller.MemoController;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class MemberListController { //완전한 POJO
 	MemberService service = new MemberServiceImpl();
-	private static final Logger log = LoggerFactory.getLogger(MemoControllerServlet.class);
+	private static final Logger log = LoggerFactory.getLogger(MemoController.class);
 
 	@RequestMapping("/member/memberList.do")
 	public String memberList(
@@ -39,8 +39,7 @@ public class MemberListController { //완전한 POJO
 		List<MemberVO> memberList = service.retrieveMemberList(pagingVO);
 		req.setAttribute("pagingVO", pagingVO);
 		
-		String viewName = "member/memberList";
-		return viewName;
+		return "member/memberList";
 				
 	}
 }

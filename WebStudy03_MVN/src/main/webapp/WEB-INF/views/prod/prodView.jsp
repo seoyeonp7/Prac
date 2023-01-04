@@ -149,6 +149,9 @@
 								</tr>
 							</c:otherwise>
 						</c:choose>
+						<tr>
+							<td><a href="<c:url value='/prod/prodUpdate.do?prodId=${prod.prodId}'/>" class="btn btn-primary">수정</a></td>
+						</tr>
 					</tbody>
 				</table>
 			</td>
