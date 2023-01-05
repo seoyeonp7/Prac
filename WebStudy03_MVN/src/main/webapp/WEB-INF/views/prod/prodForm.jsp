@@ -15,7 +15,7 @@
 </head>
 <body>
 <h4>상품 등록 양식</h4>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th>회원아이디</th>
@@ -89,8 +89,11 @@
 		</tr>
 		<tr>
 			<th>상품이미지</th>
-			<td><input class="form-control" type="text" 
-				name="prodImg" value="${prod.prodImg}" /><span class="text-danger">${errors.prodImg}</span></td>
+			<td>
+			<input type="file" name="prodImage" accept="image/*"><!-- prodImage:클라이언트용/prodImg:DB용 -->
+			
+			<span class="text-danger">${errors.prodImg}</span>
+			</td>
 		</tr>
 		<tr>
 			<th>재고</th>

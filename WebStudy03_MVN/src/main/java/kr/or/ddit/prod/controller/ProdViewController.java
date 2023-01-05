@@ -2,18 +2,14 @@ package kr.or.ddit.prod.controller;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
+import javax.servlet.http.HttpSession;
 
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
-import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.prod.service.ProdService;
 import kr.or.ddit.prod.service.ProdServiecImpl;
 import kr.or.ddit.vo.ProdVO;
@@ -28,10 +24,20 @@ public class ProdViewController {
 	ProdService service = new ProdServiecImpl();
 	
 	@RequestMapping("/prod/prodView.do")
-	public String prodView(@RequestParam("what") String prodId, HttpServletRequest req) throws IOException {
+	public String prodView(@RequestParam("what") String prodId, HttpServletRequest req) throws IOException, ServletException {
 
 		ProdVO prod = service.retrieveProd(prodId);
-
+		
+		String prodImg = prod.getProdImg();
+		HttpSession session = req.getSession();
+		String saveFolerURL = "/resources/prodImages";
+		ServletContext application = req.getServletContext();
+		String saveFolerPath = application.getRealPath(saveFolerURL);
+		String saveFileURL = saveFolerURL + "/" + prodImg;
+					
+				
+		session.setAttribute("fileMetadata", saveFileURL);
+		
 		req.setAttribute("prod", prod);
 
 		return "prod/prodView"; // logical view name

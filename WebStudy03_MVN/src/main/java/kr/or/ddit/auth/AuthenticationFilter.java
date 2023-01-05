@@ -2,6 +2,7 @@ package kr.or.ddit.auth;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -59,13 +60,12 @@ public class AuthenticationFilter implements Filter{
 		
 		boolean pass = true;
 		if(securedResources.containsKey(uri)) {
-			Object authMember = req.getSession().getAttribute("authMember");
-			if(authMember==null) {
+			Principal principal = req.getUserPrincipal();
+			if(principal==null) {
 				pass = false;
 			}
 		}
 		
-		System.out.println("pass값 :" +pass);
 		if(pass) {
 			//보호자원 아니거나 보호자원+신원확인 된 케이스
 			chain.doFilter( request, response );

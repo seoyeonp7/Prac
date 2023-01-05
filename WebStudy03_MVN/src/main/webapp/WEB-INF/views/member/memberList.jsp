@@ -12,7 +12,7 @@
 </head>
 <body>
 <h4>회원목록 조회</h4>
-<table>
+<table class="table table-bordered">
 	<thead>
 		<tr>
 			<th>일련번호</th>

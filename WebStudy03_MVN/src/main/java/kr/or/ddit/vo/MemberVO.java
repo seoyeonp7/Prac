@@ -1,6 +1,8 @@
 package kr.or.ddit.vo;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.List;
 
 import javax.validation.constraints.Email;
@@ -12,6 +14,7 @@ import javax.validation.groups.Default;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import kr.or.ddit.mvc.multipart.MultipartFile;
 import kr.or.ddit.validate.DeleteGroup;
 import kr.or.ddit.validate.InsertGroup;
 import lombok.Data;
@@ -54,9 +57,9 @@ import lombok.ToString;
  */
 //@Getter
 //@Setter
-@Data
 @ToString(exclude= {"memPass","memRegno1","memRegno2"})
 @EqualsAndHashCode(of="memId")
+@Data
 @NoArgsConstructor()
 public class MemberVO implements Serializable {
 	
@@ -108,4 +111,21 @@ public class MemberVO implements Serializable {
 	private List<ProdVO> prodList; //has many 관계(1:N)
 	
 	private String memRole;
+	
+	private byte[] memImg; //DB
+	private MultipartFile memImage; //Client
+	
+	public void setMemImage(MultipartFile memImage) throws IOException {
+		if(memImage!=null && !memImage.isEmpty()) {
+			this.memImage = memImage;
+			this.memImg = memImage.getbytes();
+		}
+	}
+	
+	public String getBase64MemImg() {
+		if(memImg!=null)
+			return Base64.getEncoder().encodeToString(memImg);
+		else
+			return null;
+	}
 }

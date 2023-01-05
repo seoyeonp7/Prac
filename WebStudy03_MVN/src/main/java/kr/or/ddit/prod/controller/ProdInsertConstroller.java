@@ -1,9 +1,20 @@
 package kr.or.ddit.prod.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -13,8 +24,11 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.controller.MemberInsertController;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
+import kr.or.ddit.mvc.multipart.MultipartFile;
+import kr.or.ddit.mvc.multipart.MultipartHttpServletRequest;
 import kr.or.ddit.prod.dao.OthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.ProdService;
@@ -44,8 +58,26 @@ public class ProdInsertConstroller{
 	public String insertProcess(
 		HttpServletRequest req
 		, @ModelAttribute("prod") ProdVO prod //command object
-	) {
+		, @RequestPart("prodImage") MultipartFile prodImage
+	) throws IOException, ServletException {
 		addAttribute(req);
+		
+		if(prodImage!=null && !prodImage.isEmpty()) {
+//			1. 저장
+			String saveFolerURL = "/resources/prodImages"; //논리적 경로
+			ServletContext application = req.getServletContext();
+			String saveFolerPath = application.getRealPath(saveFolerURL);
+			File saveFolder = new File(saveFolerPath);
+			if(!saveFolder.exists())
+				saveFolder.mkdirs();
+			
+//			2. metedata추출(저장한 파일의 url)
+			String saveFileName = UUID.randomUUID().toString();
+			prodImage.transferTo(new File(saveFolder,saveFileName));
+//			3. DB저장 : prodImg
+			prod.setProdImg(saveFileName);
+		}
+
 		
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors",errors);

@@ -1,5 +1,6 @@
 package kr.or.ddit.member.controller;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,12 @@ import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
+import kr.or.ddit.mvc.multipart.MultipartFile;
+import kr.or.ddit.mvc.multipart.MultipartHttpServletRequest;
+import kr.or.ddit.mvc.multipart.StandardServletMultipartFile;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.ValidationUtils;
 import kr.or.ddit.vo.MemberVO;
@@ -32,15 +37,16 @@ public class MemberInsertController{
 	@RequestMapping("/member/memberInsert.do")
 	public String memberForm() {
 		return "/member/memberForm";
-		
 	}
 	
 	@RequestMapping(value="/member/memberInsert.do",method=RequestMethod.POST)
 	public String memberInsert(
-			HttpServletRequest req
-			, @ModelAttribute("member") MemberVO member
-			) throws ServletException {
-
+		HttpServletRequest req
+		, @ModelAttribute("member") MemberVO member
+		, @RequestPart(value="memImage",required=false) MultipartFile memImage
+	) throws ServletException, IOException {
+			member.setMemImage(memImage);
+		
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors",errors);
 		

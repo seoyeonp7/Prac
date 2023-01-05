@@ -42,7 +42,7 @@ public class DispatcherServlet extends HttpServlet{
 //		super.service(req, resp); 
 //		이 코드 지우면 현재 서블릿에서는 do계열 메소드를 사용하지 않겠다는 뜻(실제 데이터 처리할 것 아니므로)
 		
-		req.setCharacterEncoding("UTF-8");
+		
 		
 //		String requestURI = req.getRequestURI(); //contextPath포함
 //		requestURI = requestURI.substring(req.getContextPath().length());
