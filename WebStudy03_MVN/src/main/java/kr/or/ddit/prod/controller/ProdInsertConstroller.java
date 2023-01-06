@@ -58,27 +58,21 @@ public class ProdInsertConstroller{
 	public String insertProcess(
 		HttpServletRequest req
 		, @ModelAttribute("prod") ProdVO prod //command object
-		, @RequestPart("prodImage") MultipartFile prodImage
+		, @RequestPart(value="prodImage",required=false) MultipartFile prodImage
 	) throws IOException, ServletException {
 		addAttribute(req);
 		
-		if(prodImage!=null && !prodImage.isEmpty()) {
-//			1. 저장
-			String saveFolerURL = "/resources/prodImages"; //논리적 경로
-			ServletContext application = req.getServletContext();
-			String saveFolerPath = application.getRealPath(saveFolerURL);
-			File saveFolder = new File(saveFolerPath);
-			if(!saveFolder.exists())
-				saveFolder.mkdirs();
-			
-//			2. metedata추출(저장한 파일의 url)
-			String saveFileName = UUID.randomUUID().toString();
-			prodImage.transferTo(new File(saveFolder,saveFileName));
-//			3. DB저장 : prodImg
-			prod.setProdImg(saveFileName);
-		}
-
+		prod.setProdImage(prodImage);
 		
+		String saveFolerURL = "/resources/prodImages"; //논리적 경로
+		ServletContext application = req.getServletContext();
+		String saveFolerPath = application.getRealPath(saveFolerURL);
+		File saveFolder = new File(saveFolerPath);
+		if(!saveFolder.exists())
+			saveFolder.mkdirs();
+		
+		prod.saveTo(saveFolder);
+
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors",errors);
 		

@@ -123,7 +123,6 @@
 			, #{prodOutline,jdbcType=VARCHAR}
 			, #{prodDetail,jdbcType=CLOB}
 			, #{prodImg,jdbcType=VARCHAR}
-			
 			, #{prodTotalstock,jdbcType=NUMERIC}
 			, #{prodInsdate,jdbcType=DATE}
 			, #{prodProperstock,jdbcType=NUMERIC}
@@ -149,7 +148,6 @@
 			, PROD_SALE = #{prodSale,jdbcType=NUMERIC}
 			, PROD_OUTLINE = #{prodOutline,jdbcType=VARCHAR}
 			, PROD_DETAIL = #{prodDetail,jdbcType=CLOB}
-			, PROD_IMG = #{prodImg,jdbcType=VARCHAR}
 			
 			, PROD_TOTALSTOCK = #{prodTotalstock,jdbcType=NUMERIC}
 			, PROD_INSDATE = #{prodInsdate,jdbcType=DATE}
@@ -162,7 +160,11 @@
 			, PROD_QTYIN = #{prodQtyin,jdbcType=NUMERIC}
 			, PROD_QTYSALE = #{prodQtysale,jdbcType=NUMERIC}
 			, PROD_MILEAGE = #{prodMileage,jdbcType=NUMERIC}
-		
+			
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(prodImg)">
+			, PROD_IMG = #{prodImg,jdbcType=VARCHAR}
+			</if>
+			
 		WHERE 
 			PROD_ID = #{prodId,jdbcType=VARCHAR}
 	</update>

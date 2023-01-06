@@ -19,27 +19,23 @@
 		<table class="table table-bordered">
 			<tr>
 				<th>회원아이디</th>
-				<td><input class="form-control" type="text" 
-					name="memId" value="${member.memId}" /><span class="text-danger">${errors.memId}</span></td>
+				<td><input class="form-control" type="text" name="memId"
+					value="${member.memId}" /><span class="text-danger">${errors.memId}</span></td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
-				<td><input class="form-control" type="text" 
-					name="memPass" value="${member.memPass}" /><span
-					class="text-danger">${errors.memPass}</span></td>
+				<td><input class="form-control" type="text" name="memPass"
+					value="${member.memPass}" /><span class="text-danger">${errors.memPass}</span></td>
 			</tr>
 			<tr>
 				<th>회원명</th>
-				<td><input class="form-control" type="text" 
-					name="memName" value="${member.memName}" /><span
-					class="text-danger">${errors.memName}</span></td>
+				<td><input class="form-control" type="text" name="memName"
+					value="${member.memName}" /><span class="text-danger">${errors.memName}</span></td>
 			</tr>
 			<tr>
 				<th>회원프로필</th>
-				<td>
-					<input type="file" name="memImage" accept="image/*" />
-					<span class="text-danger">${erros.memImage}</span>
-				</td>
+				<td><input type="file" name="memImage" accept="image/*" /><span
+					class="text-danger">${erros.memImage}</span></td>
 			</tr>
 			<tr>
 				<th>주민번호1</th>
@@ -58,20 +54,18 @@
 			</tr>
 			<tr>
 				<th>우편번호</th>
-				<td><input class="form-control" type="text" 
-					name="memZip" value="${member.memZip}" /><span class="text-danger">${errors.memZip}</span></td>
+				<td><input class="form-control" type="text" name="memZip"
+					value="${member.memZip}" /><span class="text-danger">${errors.memZip}</span></td>
 			</tr>
 			<tr>
 				<th>주소1</th>
-				<td><input class="form-control" type="text" 
-					name="memAdd1" value="${member.memAdd1}" /><span
-					class="text-danger">${errors.memAdd1}</span></td>
+				<td><input class="form-control" type="text" name="memAdd1"
+					value="${member.memAdd1}" /><span class="text-danger">${errors.memAdd1}</span></td>
 			</tr>
 			<tr>
 				<th>주소2</th>
-				<td><input class="form-control" type="text" 
-					name="memAdd2" value="${member.memAdd2}" /><span
-					class="text-danger">${errors.memAdd2}</span></td>
+				<td><input class="form-control" type="text" name="memAdd2"
+					value="${member.memAdd2}" /><span class="text-danger">${errors.memAdd2}</span></td>
 			</tr>
 			<tr>
 				<th>집전번</th>

@@ -16,7 +16,7 @@ public class ProdServiecImpl implements ProdService {
 		int totalRecord = prodDAO.selectTotalRecord(pagingVO);
 		pagingVO.setTotalRecord(totalRecord);
 		List<ProdVO> dataList = prodDAO.selectProdList(pagingVO);
-		pagingVO.setDataList(dataList);		
+		pagingVO.setDataList(dataList);
 	}
 	
 	@Override
@@ -38,14 +38,10 @@ public class ProdServiecImpl implements ProdService {
 	@Override
 	public ServiceResult modifyProd(ProdVO prod) {
 		//존재하지 않는 경우, RuntimeException 발생. OK, FAIL
-		ProdVO inputData = new ProdVO();
-		inputData.setProdId(prod.getProdId());
-		ServiceResult result = null;
+		retrieveProd(prod.getProdId());
 		
 		//update
 		int rowcnt = prodDAO.updateProd(prod);
-		result = rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
-		
-		return result;
+		return rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
 	}
 }

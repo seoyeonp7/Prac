@@ -20,8 +20,6 @@ import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
 import kr.or.ddit.mvc.multipart.MultipartFile;
-import kr.or.ddit.mvc.multipart.MultipartHttpServletRequest;
-import kr.or.ddit.mvc.multipart.StandardServletMultipartFile;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.ValidationUtils;
 import kr.or.ddit.vo.MemberVO;
