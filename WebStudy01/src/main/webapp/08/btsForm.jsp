@@ -4,42 +4,52 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>08/btsForm.jsp</title>
-<jsp:include page="/includee/preScript.jsp"/>
+<title>Insert title here</title>
+<jsp:include page="/includee/preScript.jsp"></jsp:include>
 </head>
 <body>
-<select name="member">
-   <option value>멤버선택</option>
-</select>
-<script>
-	let memberSelect = $('[name="member"]').on('change', function(event){
-		let code = $(this).val(); //this = 이벤트의 타겟, option이 타겟이 아니라 select태그 자체, $(this) = option
-<%--       location.href = "<%=request.getContextPath()%>/bts/"+code; --%>
-		$.ajax({
-			url : "<%=request.getContextPath()%>/bts/"+code,
-			dataType : "html",
-			success : function(resp) {
-				memberSelect.after(resp);
-			},
-			error : function(jqXHR, status, error) {
-				console.log(jqXHR);
-				console.log(status);
-				console.log(error);
-			}
-		});
-	});
+   <select name="member">
+      
+   </select>
+   <div id="btsdisp">
+   
+   </div>
+<script type="text/javascript">
+   
+   let memberSelect = $("[name='member']").on('change',function(event){
+      let code = $(this).val(); //선택한 option값
+<%--       location.href = "<%=request.getContextPath()%>/bts/" + code; --%>
+      let disp = $("#btsdisp");
+      $.ajax({
+         url : "<%=request.getContextPath()%>/bts/"+code,
+         dataType : "html",
+         success : function(resp) {
+//             disp.html(resp); // 영역안에서 한번만 출력
+            memberSelect.after(resp); // 중첩되서 출력됨
+         },
+         error : function(jqXHR, status, error) {
+            console.log(jqXHR);
+            console.log(status);
+            console.log(error);
+         }
+      });
+   });
+
 	$.ajax({
-		url : "<%=request.getContextPath()%>/bts",
+		url : "<%=request.getContextPath() %>/bts",
 		dataType : "json",
-		success : function(resp) {
-			let options =[];
-			$.each(resp.bts,function(code,values){
-			let option = $("<option>").val(code)
-								.text(values[0])
-								options.push(option);
-		})
+		success : function(resp) { 
+	        console.log(resp.bts); // server side에서 attribute name으로 결정됨
+	//      멤버 관련 스트링을 담을 변수 선언 memList
+	     let options = [];
+	//      거기다 옵션 관련 넣기
+ 	     $.each(resp.bts, function(code, values){
+ 	    	 let option = $("<option>").val(code)
+ 	    	 			  		.text(values[0]);
+ 	    	 options.push(option);
+ 	     });
 		memberSelect.append(options);
-		},
+	  },
 		error : function(jqXHR, status, error) {
 			console.log(jqXHR);
 			console.log(status);

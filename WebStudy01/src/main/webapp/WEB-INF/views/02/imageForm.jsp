@@ -9,15 +9,23 @@
 </head>
 <body>
 <%
-	File[] imageFiles = (File[]) request.getAttribute("imageFiles");
+	
+	File[] imageFiles = (File[])request.getAttribute("imageFiles");
+	
 %>
-   <form action="<%=request.getContextPath()%>/imageStreaming.do">
-      <select name="imgChoice">
-<%for(File tmp : imageFiles){ %>
-         <option><%=tmp.getName()%></option>
-<%}%>
-      </select>
-      <input type="submit" value="전송" />
-   </form>
+
+	<form action = '<%=request.getContextPath() %>/imageStreaming.do'>
+	<select name = 'image'>
+	<% 
+	String pattern = "<option>%s</option>\n";
+	for(File tmp : imageFiles) {
+	%>
+	<%=String.format(pattern, tmp.getName())%>
+	<%
+	}
+	%>
+	</select>
+	<input type='submit' value='전송' />
+	</form>
 </body>
 </html>

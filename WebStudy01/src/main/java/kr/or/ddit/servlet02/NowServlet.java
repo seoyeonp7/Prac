@@ -16,7 +16,7 @@ public class NowServlet extends HttpServlet {
 		Date now = new Date();
 		req.setAttribute("now", now);
 		
-		String viewPath = "/01/sample.tmpl"; //@WebServlet("*.tmpl")로
+		String viewPath = "/01/sample.tmpl";
 		req.getRequestDispatcher(viewPath).forward(req, resp);
 	}
 }

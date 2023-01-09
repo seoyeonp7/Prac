@@ -1,10 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>03/sampleForm.jsp</title>
+<title>Insert title here</title>
 </head>
 <body>
 <h4>입력 양식</h4>
@@ -13,7 +12,7 @@
 	<input type="text" name="param2" placeholder="param2"/>
 	<input type="text" name="param2" placeholder="param2"/>
 	<input type="file" name="file1" placeholder="file1" />
-	<input type="submit" value="SUBMIT" />
+	<input type="submit" value="SUBMIT">
 </form>
 </body>
 </html>

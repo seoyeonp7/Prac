@@ -15,10 +15,11 @@ import kr.or.ddit.vo.CalculateVO;
 
 @WebServlet("/04/calculate")
 public class CalculateServlet extends HttpServlet {
-	@Override
+
+	@Override // 사칙연산기 form까지 가기 위한
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String viewName = "/WEB-INF/views/03/calculateForm.jsp";
-		req.getRequestDispatcher(viewName).forward(req,resp);
+		String viewName = "/WEB-INF/views/03/calculatForm.jsp";
+		req.getRequestDispatcher(viewName).forward(req, resp);
 	}
 	
 	@Override
@@ -30,20 +31,16 @@ public class CalculateServlet extends HttpServlet {
 			calculateVO = new ObjectMapper().readValue(is, CalculateVO.class);
 		}
 		
-		req.setAttribute("expression", calculateVO.getExpression());
-		req.setAttribute("message", calculateVO.getExpression());
+		req.setAttribute("expression", calculateVO.getExpression()); //jsonview를 위한
+		req.setAttribute("message", calculateVO.getExpression()); //planeview를 위한
 		
 		String accept = req.getHeader("Accept");
 		String viewName = null;
 		if(accept.contains("json")) {
 			viewName = "/jsonView.do";
-		} else {
+		}else {
 			viewName = "/WEB-INF/views/04/plainView.jsp";
-			
 		}
 		req.getRequestDispatcher(viewName).forward(req, resp);
-		
-		
-		
 	}
 }

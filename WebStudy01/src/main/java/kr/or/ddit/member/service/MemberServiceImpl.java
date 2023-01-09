@@ -9,14 +9,14 @@ import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
 
 public class MemberServiceImpl implements MemberService {
-	//결합력 최상
-	private MemberDAO memberDAO = new MemberDAOImpl();
-
+	//dao의존관계 형성 -> 결합력이 최상으로 발생
+	public MemberDAO memberDAO = new MemberDAOImpl();
+	
 	@Override
 	public ServiceResult createMember(MemberVO member) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}                 
 
 	@Override
 	public List<MemberVO> retrieveMemberList() {
@@ -28,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO retrieveMember(String memId) {
 		MemberVO member = memberDAO.selectMember(memId);
 		if(member==null)
-			throw new UserNotFoundException(String.format(memId+"에 해당하는 사용자 없음."));
+			throw new UserNotFoundException(String.format(memId + "에 해당하는 사용자 없음."));
 		return member;
 	}
 

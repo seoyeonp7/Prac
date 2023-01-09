@@ -5,21 +5,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>11/viewCookie.jsp</title>
+<title>Insert title here</title>
 </head>
 <body>
 <h4>동일 경로</h4>
 <pre>
-	<%
-		Cookie[] cookies = request.getCookies();
-		if(cookies!=null){
-			for(Cookie tmp : cookies){
-				out.println(
-					String.format("%s : %s", tmp.getName(), URLDecoder.decode(tmp.getValue(),"UTF-8"))		
-				);
-			}
-		}
-	%>
+   <%
+      Cookie[] cookies = request.getCookies();
+      if(cookies != null){
+         for(Cookie tmp : cookies){
+            out.println(
+               String.format("%s : %s", tmp.getName(), URLDecoder.decode(tmp.getValue(),"UTF-8"))   
+            );
+         }
+      }
+   %>
 </pre>
 </body>
 </html>

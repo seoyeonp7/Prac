@@ -10,19 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/login/logout.do")
-public class LogoutControllerServlet extends HttpServlet {
+public class LogoutControllerServlet extends HttpServlet{
+	// a태그를 사용했으니까 doGet(아무리 용을 써도 post 사용 못해 form을 사용해야 post 사용 가능)
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-//		session.removeAttribute("authMemeber");
-		//현재 세션 모든 정보 지워주고 + 더이상 사용할 수 없게 만료시킴
+		// 세션속성 지워줘야해~~
+//		session.removeAttribute("authMember");
 		session.invalidate();
 		
 		String viewName = "redirect:/";
 		if(viewName.startsWith("redirect:")) {
 			viewName = viewName.substring("redirect:".length());
-			resp.sendRedirect(req.getContextPath()+viewName);
-		} else {
+			resp.sendRedirect(req.getContextPath() + viewName);
+		}else {
+			// 디스패치로 포워딩
 			req.getRequestDispatcher(viewName).forward(req, resp);
 		}
 	}

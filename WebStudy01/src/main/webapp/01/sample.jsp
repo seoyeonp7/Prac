@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h4> JSP는 진짜일까? </h4>
+	<h4>JSP는 진짜일까?</h4>
 </body>
 </html>

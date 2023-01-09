@@ -17,30 +17,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import kr.or.ddit.servlet01.DescriptionServlet;
-import kr.or.ddit.servlet04.serviece.PropertiesServiceImpl;
-import kr.or.ddit.servlet04.serviece.PropertiesServiece;
+import kr.or.ddit.servlet04.service.PropertiesService;
+import kr.or.ddit.servlet04.service.PropertiesServiceImpl;
 
 @WebServlet("/03/props/propsView.do")
 public class PropertiesControllerServlet extends HttpServlet{
-	private PropertiesServiece service = new PropertiesServiceImpl();
+	private PropertiesService service = new PropertiesServiceImpl();
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String accept = req.getHeader("Accept"); //1.요청 분석
-		
-		Object target = service.retrieveData(); //2.모델 확보(service와의 의존관계 형성)
-		req.setAttribute("target", target); //3.모델 공유
-		
-		String path = null;
-		
-		//4.뷰를 선택
-		if(accept.startsWith("*/*") || accept.toLowerCase().contains("html")) {
-			path = "/WEB-INF/views/03/propsView.jsp";
-		} else if(accept.toLowerCase().contains("json")) {
-			path = "/jsonView.do";
-		} else if(accept.toLowerCase().contains("xml")) {
-			path = "/xmlView.do";
-		}
-		req.getRequestDispatcher(path).forward(req, resp); //5.뷰로 이동
-	}
-} 
+   @Override
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      String accept = req.getHeader("Accept");
+      
+      Object target = service.retrieveData();
+      req.setAttribute("target", target);
+      
+      String path = null;
+      
+      if(accept.startsWith("*/*") || accept.toLowerCase().contains("html")) {
+         path = "/WEB-INF/views/03/propsView.jsp";
+      } else if(accept.toLowerCase().contains("json")) {
+    	 path = "/jsonView.do";
+      } else if(accept.toLowerCase().contains("xml")) {
+    	 path = "/xmlView.do";
+      } 
+      req.getRequestDispatcher(path).forward(req, resp); 
+   }
+}

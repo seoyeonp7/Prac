@@ -14,37 +14,37 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/02/imageForm.do")
 public class ImageStreamingFormServlet02 extends HttpServlet {
-   private ServletContext application;
-   private String imageFolder;
-   
-   @Override
-   public void init(ServletConfig config) throws ServletException {
-      super.init(config);
-      application = getServletContext();
-      imageFolder = application.getInitParameter("imageFolder");
-   }
-   @Override
-   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-      resp.setContentType("text/html;charset=UTF-8");  // 출력스트링 개방하기 전에 설정해야함
-      
-      File folder = new File(imageFolder);
-      File[] imageFiles = folder.listFiles((dir, name)->{
-         String mime = application.getMimeType(name);
-         return mime != null && mime.startsWith("image/");
-      });
-      
-      String pattern = "<option>%s</option>\n";
-      StringBuffer options = new StringBuffer();
-      for(File tmp : imageFiles) {
-         options.append(String.format(pattern, tmp.getName()));
-      }
-      
-      req.setAttribute("cPath", req.getContextPath());
-      req.setAttribute("options", options);
-      
-//      req.getRequestDispatcher("/01/imageForm.tmpl").forward(req, resp);
-      String viewName = "/WEB-INF/views/01/imageForm.jsp";
-      req.getRequestDispatcher(viewName).forward(req, resp);
-      
-   }
+	private ServletContext application;
+	private String imageFolder;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		application = getServletContext();
+		imageFolder = application.getInitParameter("imageFolder");
+	}
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/html;charset=UTF-8");  // 출력스트링 개방하기 전에 설정해야함
+		
+		File folder = new File(imageFolder);
+		File[] imageFiles = folder.listFiles((dir, name)->{
+			String mime = application.getMimeType(name);
+			return mime != null && mime.startsWith("image/");
+		});
+		
+		String pattern = "<option>%s</option>\n";
+		StringBuffer options = new StringBuffer();
+		for(File tmp : imageFiles) {
+			options.append(String.format(pattern, tmp.getName()));
+		}
+		
+		req.setAttribute("cPath", req.getContextPath());
+		req.setAttribute("options", options);
+		
+//		req.getRequestDispatcher("/01/imageForm.tmpl").forward(req, resp);
+		String viewName = "/WEB-INF/views/01/imageForm.jsp";
+		req.getRequestDispatcher(viewName).forward(req, resp);
+		
+	}
 }

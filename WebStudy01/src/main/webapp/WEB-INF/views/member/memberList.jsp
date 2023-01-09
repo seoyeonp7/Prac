@@ -1,17 +1,14 @@
-<%@page import="java.util.List"%>
-<%@page import="kr.or.ddit.vo.MemberVO"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>member/memberList.do</title>
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<h4>회원목록 조회</h4>
+<h4>회원 목록 조회</h4>
+
 <table>
 	<thead>
 		<tr>
@@ -25,20 +22,20 @@
 	</thead>
 	<tbody>
 		<c:choose>
-			<c:when test="${not empty memberList}">
-			<c:forEach items="${memberList }" var="member">
+			<c:when test="${not empty memberList }">
+				<c:forEach items="${memberList }" var="member">
 					<tr>
-						<td>${member.memId}</td>
+						<td>${member.memId }</td>
 						<td>
 							<c:url value="/member/memberView.do" var="viewURL">
-								<c:param name="who" value="${member.memId }" />
+								<c:param name="who" value="${member.memId }"/>
 							</c:url>
-							<a href="${viewURL}">${member.memName}</a>
+							<a href="${viewURL }"> ${member.memName }</a>
 						</td>
-						<td>${member.memMail}</td>
-						<td>${member.memHp}</td>
-						<td>${member.memAdd1}</td>
-						<td>${member.memMileage}</td>
+						<td>${member.memMail }</td>
+						<td>${member.memHp }</td>
+						<td>${member.memAdd1 }</td>
+						<td>${member.memMileage }</td>
 					</tr>
 				</c:forEach>
 			</c:when>

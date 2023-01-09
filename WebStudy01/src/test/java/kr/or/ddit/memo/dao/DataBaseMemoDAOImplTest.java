@@ -53,16 +53,3 @@ public class DataBaseMemoDAOImplTest {
 	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

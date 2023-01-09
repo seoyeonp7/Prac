@@ -30,13 +30,8 @@
    greetingArea.data("key2", "otherValue");
    console.log(greetingArea.data("key2"));
    let radioBtns = $('[type="radio"]');
-   ///
-   let selectBtns = $('#selName');
-   
    let dataTypes = radioBtns.filter("[name=dataType]");
    let locales = radioBtns.filter("[name=language]");
-   
-   
    let successes = {
       json:function(resp){
          console.log(resp);
@@ -62,70 +57,27 @@
       }
    };
    
-	radioBtns.on("change",function(){
-//       greetingArea.empty();
-      greetingArea.html("");
-      
-      let selName = $("#selName option:selected").text();
-      greetingArea.attr("data-key1",selName);
-      console.log("0000 : " , greetingArea.attr("data-key1"));
-      ///
-      let dataType = dataTypes.filter(":checked").data("dataType");
-      settings.dataType = dataType;
-      settings.success = successes[dataType];
-      ///
-      settings.data={
-// 		name:greetingArea.data("key1")
-       name : greetingArea.attr("data-key1") //속성에 바로 접근
-      }
-      
-      let locale = locales.filter(":checked").data("locale");
-      
-      if(locale) {
-//          settings.data={
-//             locale:locale,
-//             name:name
-//          }
-    	  settings.data.locale=locale;
-      }
-      
-      console.log("====================")
-      console.log(settings);
-      console.log("====================")
-      $.ajax(settings);
-   }).trigger("change"); // 강제로 이벤트를 발생시키겠다.
-   
-   ///
-   selectBtns.on("change",function(){
-//       greetingArea.empty();
-      greetingArea.html("");
-      
-      let selName = $("#selName option:selected").text();
-      greetingArea.attr("data-key1",selName);
-      console.log("0000 : " , greetingArea.attr("data-key1"));
-      let dataType = dataTypes.filter(":checked").data("dataType");
-      settings.dataType = dataType;
-      settings.success = successes[dataType];
-      
-      settings.data={
-// 		name:greetingArea.data("key1")
-       name : greetingArea.attr("data-key1") //속성에 바로 접근
-      }
-      
-      let locale = locales.filter(":checked").data("locale");
-      
-      if(locale) {
-//          settings.data={
-//             locale:locale,
-//             name:name
-//          }
-    	  settings.data.locale=locale;
-      }
-      
-      console.log("====================")
-      console.log(settings);
-      console.log("====================")
-      $.ajax(settings);
+  	radioBtns.on("change",function(){
+// 	   greetingArea.empty(); //비워주기
+	   greetingArea.html("");
+	   let dataType = dataTypes.filter(":checked").data("dataType");
+	   settings.dataType = dataType;
+	   settings.success = successes[dataType];
+	   settings.data={
+// 			name:greetingArea.data("key1")
+			name:greetingArea.attr("data-key1") // 속성에 바로 접근하겠다는 뜻
+	   }
+	   let locale = locales.filter(":checked").data("locale");
+	   if(locale) {
+// 	      settings.data={
+// 	         locale:locale   
+// 	      }
+		  settings.data.locale=locale;
+	   }
+	   console.log("====================")
+	   console.log(settings);
+	   console.log("====================")
+	   $.ajax(settings);
    }).trigger("change"); // 강제로 이벤트를 발생시키겠다.
    
   

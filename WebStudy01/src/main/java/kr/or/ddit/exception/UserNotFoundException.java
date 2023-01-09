@@ -1,9 +1,12 @@
 package kr.or.ddit.exception;
 
-/**
- *	인증 처리에서 사용할 커스텀 예외(해당 사용자가 존재하지 않을 때 발생시킴)
- */
 public class UserNotFoundException extends RuntimeException {
+
+/**
+ * 인증 처리에서 사용할 커스텀 예외(해당 사용자가 존재하지 않을 때 발생시킴)
+ * 
+ */
+	private static final long serialVersionUID = 2790688416505078623L;
 
 	public UserNotFoundException() {
 		super();

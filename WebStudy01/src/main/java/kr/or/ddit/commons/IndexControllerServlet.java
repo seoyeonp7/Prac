@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/index.do")
-public class IndexControllerServlet extends HttpServlet {
+public class IndexControllerServlet extends HttpServlet{
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("contentPage", "/WEB-INF/views/index.jsp");
-		String viewName ="/WEB-INF/views/layout.jsp";
+		String viewName = "/WEB-INF/views/layout.jsp";
 		req.getRequestDispatcher(viewName).forward(req, resp);
-		
 	}
 }

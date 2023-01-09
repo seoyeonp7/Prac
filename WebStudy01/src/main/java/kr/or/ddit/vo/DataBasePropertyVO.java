@@ -6,6 +6,7 @@ public class DataBasePropertyVO implements Serializable {
 	private String propertyName;
 	private String propertyValue;
 	private String description;
+	
 	public String getPropertyName() {
 		return propertyName;
 	}
@@ -24,6 +25,7 @@ public class DataBasePropertyVO implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -52,4 +54,5 @@ public class DataBasePropertyVO implements Serializable {
 		return "DataBasePropertyVO [propertyName=" + propertyName + ", propertyValue=" + propertyValue
 				+ ", description=" + description + "]";
 	}
+	
 }

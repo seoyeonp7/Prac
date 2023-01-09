@@ -11,8 +11,9 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 /**
- *	Factory Object[Method] Pattern
- *	 :필요 객체의 생성을 전담하는 객체를 별도 운영하는 구조.
+ * Factory Object[Method] Pattern
+ * 	: 필요 객체의 생성을 전담하는 객체를 별도 운영하는 구조. 
+ *
  */
 public class ConnectionFactory {
 	private static String url;
@@ -20,13 +21,11 @@ public class ConnectionFactory {
 	private static String password;
 	
 	private static DataSource ds;
-	
-	//클래스가 메모리에 로딩될 때 실행되는 코드블럭 
-	//(클래스는 한번만 로딩됨, 따라서 어플리케이션 전체 통틀어서 한번 실행됨)
+	//클레스 메모리에 로딩될때 실행됨! 어플리케이션 전체 통틀어서 딱 한 번 실행된다.
 	static {
-		String path = "/kr/or/ddit/db/dbInfo.properties"; //클래스패스 리소스(물리경로를 통해)
+		String path ="/kr/or/ddit/db/dbInfo.properties";
 		try(
-			InputStream is = ConnectionFactory.class.getResourceAsStream(path); //클래스 로더
+			InputStream is = ConnectionFactory.class.getResourceAsStream(path);
 		) {
 			Properties dbInfo = new Properties();
 			dbInfo.load(is);
@@ -35,8 +34,7 @@ public class ConnectionFactory {
 			user = dbInfo.getProperty("user");
 			password = dbInfo.getProperty("password");
 			
-//			Class.forName(dbInfo.getProperty("driverClassName"));
-			
+//	        Class.forName(dbInfo.getProperty("driverClassName")); //db가 바껴도 팩토리 건들 필요 없어짐
 			BasicDataSource bds = new BasicDataSource();
 			bds.setDriverClassName(dbInfo.getProperty("driverClassName"));
 			bds.setUrl(url);
@@ -44,24 +42,20 @@ public class ConnectionFactory {
 			bds.setPassword(password);
 			
 			bds.setInitialSize(Integer.parseInt(dbInfo.getProperty("initialSize")));
-			bds.setMaxIdle(Integer.parseInt(dbInfo.getProperty("maxIdle"))); 
-			//다 놀고 있을 때 5개 빼고 다 죽여야 한다.
-			//InitialSize와 MaxIdledms 값이 같아야 함
+			bds.setMaxIdle(Integer.parseInt(dbInfo.getProperty("maxIdle"))); // 10개가 한꺼번에 반납되면 최대 5개까지 놀릴 수 있고, 5개는 죽인다. setInitialSize랑 같은거임
 			
-			bds.setMaxTotal(Integer.parseInt(dbInfo.getProperty("maxTotal"))); 
-			//반납 없을 때 여유분 5개 더 만들 수 있다.
-			//풀링 : 미리 만들어 놓는다 + 객체의 재활용
-			bds.setMaxWaitMillis(Integer.parseInt(dbInfo.getProperty("maxWait"))); //max 찼을 때 2초까지만 기다리고 SQLException 발생
+			bds.setMaxTotal(Integer.parseInt(dbInfo.getProperty("maxTotal"))); // 최대 10개 
+			bds.setMaxWaitMillis(Integer.parseInt(dbInfo.getProperty("maxWait"))); //2초를 기다렸는데도 반납되는 게 없으면 sql예외 발생시킴
 			
 			ds = bds;
 			
 		} catch (Exception e1) {
-			throw new RuntimeException(e1); //checked를 unchecked exception으로
-		}
+	         throw new RuntimeException(e1);
+	      }
 	}
 	
 	public static Connection getConnection() throws SQLException {
-//		Connection conn = DriverManager.getConnection(url, user, password);
-		return ds.getConnection();
+//	      Connection conn = DriverManager.getConnection(url, user, password);
+	      return ds.getConnection();
 	}
 }

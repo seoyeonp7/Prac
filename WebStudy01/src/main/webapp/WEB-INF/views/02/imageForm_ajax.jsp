@@ -1,7 +1,7 @@
 <%@page import="java.io.File"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,15 +23,16 @@
 </head>
 <body>
    <form name="imgForm" action='<%=request.getContextPath()%>/imageStreaming.do'>
-	   <!-- name = document의 property명 -->
-	   <select name='image'>
-	   </select>
-	   <input type='submit' value='전송' />
+   <select name='image'> 
+   
+   </select>  
+   <input type='submit' value='전송' />
    </form>
-   <div id="imgArea">
+   <div id="imagArea">
    </div>
    <script type="text/javascript">
-   	  const DIVTAG = $("#imgArea");
+   	  const DIVTAG = $("#imagArea");
+   	  // 이미지 랜더링하기!(change)
       const SELECTTAG = $("[name=image]").on("change", function(event){
          let option = $(this).find("option:selected");
          let mime = option.attr("class");
@@ -40,13 +41,13 @@
          $(this).addClass(clzName);
          
          let srcURL = document.imgForm.action;
-         /* 물음표 뒤 쿼리스트링 만들어주기 위해 시리얼라이즈 */
          let queryString = $(document.imgForm).serialize();
-         let src = "%U?%P".replace("%U",srcURL).replace("%P",queryString);
-                  
-         let img = $("<img>").attr("src",src)
+         let src = "%U?%P".replace("%U", srcURL).replace("%P", queryString);
+         
+         let img = $("<img>").attr("src", src);
          DIVTAG.html(img);
          
+<%--          $("<img>").attr("src", '<%=request.getContextPath()%>/imageStreaming.do?image=' + $(this).val()); --%>
       });
       const changeCondition = {
          jpeg:"red"
@@ -81,12 +82,11 @@
                 options.push(option);
              });
              SELECTTAG.append(options);
-             
-             //백엔드 코드
-             <c:if test="${not empty cookie['imageCookie']}">
+             //커스텀태그는 꺾쇠가 있어도 프론트 코드가 아님 백앤드 코드임!
+			 <c:if test="${not empty cookie['imageCookie']}">
 	             SELECTTAG.val("${cookie['imageCookie']['value']}");
-	             SELECTTAG.trigger('change');
-             </c:if>             
+	             SELECTTAG.trigger('change'); // 이미지 띄우기
+			 </c:if>
          },
          error : function(jqXHR, status, error) {
             console.log(jqXHR);

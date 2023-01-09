@@ -28,15 +28,15 @@ public class DataBasePropertyDAOImpl implements DataBasePropertyDAO {
      
       try(  
           Connection conn = ConnectionFactory.getConnection();//db계정 정보가 바뀌더라도 얘는 바꿀 필요 없음!
-         PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+    	  PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 //         Statement stmt = conn.createStatement(); // 결정적인 쿼리는 여기서 결정됨~!
       ){
 //         ResultSet rs = stmt.executeQuery(sql.toString());
-         if(StringUtils.isNotBlank(propertyName)) {
-//            pstmt.setInt(1, 34); 숫자만 가능
-            pstmt.setString(1, propertyName); //문자도 가능
-         }
-         ResultSet rs = pstmt.executeQuery();
+    	  if(StringUtils.isNotBlank(propertyName)) {
+//    		  pstmt.setInt(1, 34); 숫자만 가능
+	    	  pstmt.setString(1, propertyName); //문자도 가능
+    	  }
+    	  ResultSet rs = pstmt.executeQuery();
           List<DataBasePropertyVO> list = new ArrayList<>();
           while(rs.next()){
              DataBasePropertyVO vo = new DataBasePropertyVO();

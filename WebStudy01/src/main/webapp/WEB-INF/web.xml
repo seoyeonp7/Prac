@@ -1,68 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>WebStudy01</display-name>
+  <display-name>webStudy01</display-name>
   <welcome-file-list>
     <welcome-file>index.do</welcome-file>
   </welcome-file-list>
-  
+  <servlet>
+    <servlet-name>imageList</servlet-name>
+    <servlet-class>kr.or.ddit.servlet01.ImageList</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>imageList</servlet-name>
+    <url-pattern>/imageList.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ImageListServlet</servlet-name>
+    <servlet-class>kr.or.ddit.servlet01.ImageListServlet</servlet-class>
+    <init-param>
+      <param-name>imageFolder</param-name>
+      <param-value>d:/contents/images</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageListServlet</servlet-name>
+    <url-pattern>/imageListServlet.do</url-pattern>
+  </servlet-mapping>
   <context-param>
-  	<param-name>imageFolder</param-name>
-        <param-value>d:/contents/images</param-value>
+    <param-name>imageFolder</param-name>
+    <param-value>d:/contents/images</param-value>
   </context-param>
-  
-  <!-- 이미지 리스트 출력 과제 서블릿 시작 -->
   <servlet>
-     <servlet-name>imageList</servlet-name>
-     <servlet-class>kr.or.ddit.servlet01.ImageList</servlet-class>
+    <servlet-name>ImageStreamingServlet</servlet-name>
+    <servlet-class>kr.or.ddit.servlet01.ImageStreamingServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-     <servlet-name>imageList</servlet-name>
-     <url-pattern>/imageList.do</url-pattern>
+    <servlet-name>ImageStreamingServlet</servlet-name>
+    <url-pattern>/imageStreaming.do</url-pattern>
   </servlet-mapping>
-  
-   <servlet>
-     <servlet-name>imageListServlet</servlet-name>
-     <servlet-class>kr.or.ddit.servlet01.ImageListServlet</servlet-class>
-   <init-param>
-        <param-name>imageFolder</param-name>
-        <param-value>d:/contents/images</param-value>
-     </init-param>
-  </servlet>
-  <servlet-mapping>
-     <servlet-name>imageListServlet</servlet-name>
-     <url-pattern>/imageListServlet.do</url-pattern>
-  </servlet-mapping>
-  <!-- 이미지 리스트 출력 과제 서블릿 끝 -->
-  
-  
-  <servlet>
-  	<servlet-name>ImageStreamingServlet</servlet-name>
-  	<servlet-class>kr.or.ddit.servlet01.ImageStreamingServlet</servlet-class>
-  	<init-param>
-  		<param-name>imageFolder</param-name>
-  		<param-value>d:/contents/images</param-value>
-  	</init-param>
-  	<load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>ImageStreamingServlet</servlet-name>
-  	<url-pattern>/imageStreaming.do</url-pattern>
-  </servlet-mapping>
-  
   <session-config>
   	<session-timeout>2</session-timeout>
   </session-config>
-  
+
   <error-page>
   	<error-code>500</error-code>
   	<location>/errors/error500.jsp</location>
   </error-page>
-  
   <error-page>
   	<error-code>404</error-code>
   	<location>/errors/error404.jsp</location>
   </error-page>
-  
   <error-page>
   	<exception-type>java.lang.NullPointerException</exception-type>
   	<location>/errors/errorNull.jsp</location>

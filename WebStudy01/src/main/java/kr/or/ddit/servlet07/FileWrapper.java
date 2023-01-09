@@ -8,20 +8,27 @@ import javax.servlet.ServletContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class FileWrapper {
-	@JsonIgnore //마샬링시 무시됨
-	private File adaptee; //getter, setter X
+	@JsonIgnore
+	private File adaptee;
 
-	public FileWrapper(File adaptee,ServletContext application) {
+	public FileWrapper(File adaptee, ServletContext application) {
 		super();
 		this.adaptee = adaptee;
-		this.name = adaptee.getName(); //ex)test.hwp
+		this.name = adaptee.getName();
 		this.contentType = Optional.ofNullable(application.getMimeType(name))
-							.orElse("application/octet-stream");
+									.orElse("application/octet-stream");
+		
 	}
 	
 	private String name;
 	private String contentType;
 
+	public File getAdaptee() {
+		return adaptee;
+	}
+	public void setAdaptee(File adaptee) {
+		this.adaptee = adaptee;
+	}
 	public String getName() {
 		return name;
 	}
@@ -34,5 +41,6 @@ public class FileWrapper {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
+	
 	
 }

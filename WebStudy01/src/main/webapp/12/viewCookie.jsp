@@ -8,17 +8,18 @@
 <title>12/viewCookie.jsp</title>
 </head>
 <body>
-<h4>다른 경로</h4>
+<h4>다른경로</h4>
 <pre>
 	<%
 		Cookie[] cookies = request.getCookies();
 		if(cookies!=null){
 			for(Cookie tmp : cookies){
 				out.println(
-					String.format("%s : %s", tmp.getName(), URLDecoder.decode(tmp.getValue(),"UTF-8"))		
+					String.format("%s : %s", tmp.getName(), URLDecoder.decode(tmp.getValue(),"UTF-8"))	
 				);
 			}
 		}
+			
 	%>
 </pre>
 </body>

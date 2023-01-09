@@ -5,44 +5,44 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * VO(Value Object), DTO(Data Transfer Object), JavaBean, Model
- * 
+ * VO(Value Object), DTO(Data Transfer Object), Java Bean, Model
+ *
  * JavaBean 규약
  * 1. 값을 담을 수 있는 property 정의
  * 2. property 캡슐화
  * 3. 캡슐화된 프로퍼티에 접근할 수 있는 인터페이스 제공 getter/setter
- * 		get[set] + 프로퍼티명의 첫분자를 대문자로 -> camel case
+ * 		get[set] + 프로퍼티명의 첫문자를 대문자로 -> camel case
  * 4. 객체의 상태 비교 방법 제공 : equals
- * 		==, equals
+ * 		==, equals(주소를 비교할지 뭘 비교할지 몰라) 차이점
  * 5. 객체의 상태 확인 방법 제공 : toString
- * 6. 객체 직렬화 가능
+ * 6. 객체 직렬화 가능 (transient를 추가하면 직렬화 하지 않음, @JsonIgnore 추가하면 마샬링 하지 않음)
  * 
- * 회원관리를 위한 Domain Layer
+ * 회원 관리를 위한 Domain Layer
  * 
  */
 public class MemberVO implements Serializable {
-	private String memId;
+	private String	memId;
 	@JsonIgnore
 	private transient String memPass;
-	private String 	memName;
+	private String	memName;
 	@JsonIgnore
 	private transient String memRegno1;
 	@JsonIgnore
 	private transient String memRegno2;
-	private String memBir;
-	private String memZip;
-	private String memAdd1;
-	private String memAdd2;
-	private String memHometel;
-	private String memComtel;
-	private String memHp;
-	private String memMail;
-	private String memJob;
-	private String memLike;
-	private String memMemorial;
-	private String memMemorialday;
+	private String	memBir;
+	private String	memZip;
+	private String	memAdd1;
+	private String	memAdd2;
+	private String	memHometel;
+	private String	memComtel;
+	private String	memHp;
+	private String	memMail;
+	private String	memJob;
+	private String	memLike;
+	private String	memMemorial;
+	private String	memMemorialday;
 	private Integer memMileage;
-	private String memDelete;
+	private String	memDelete;
 	
 	public String getMemId() {
 		return memId;
@@ -181,6 +181,7 @@ public class MemberVO implements Serializable {
 			return false;
 		return true;
 	}
+	
 	@Override
 	public String toString() {
 		return "MemberVO [memId=" + memId + ", memName=" + memName + ", memBir=" + memBir + ", memZip=" + memZip
@@ -189,6 +190,5 @@ public class MemberVO implements Serializable {
 				+ memLike + ", memMemorial=" + memMemorial + ", memMemorialday=" + memMemorialday + ", memMileage="
 				+ memMileage + ", memDelete=" + memDelete + "]";
 	}
-	
 	
 }
