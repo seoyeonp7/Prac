@@ -3,10 +3,12 @@ package kr.or.ddit.sample.service;
 import java.util.Calendar;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import kr.or.ddit.sample.dao.SampleDAO;
 import kr.or.ddit.sample.dao.SampleDAOFactory;
@@ -15,6 +17,7 @@ import kr.or.ddit.sample.dao.SampleDAOImpl_Postgre;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 public class SampleServiceImpl implements SampleService, ApplicationContextAware {
 	private ConfigurableApplicationContext context;
 	
@@ -43,7 +46,10 @@ public class SampleServiceImpl implements SampleService, ApplicationContextAware
 //	case2 : Factory Object[Method] Pattern (factory객체가 모든 결합력 떠안는다)
 //	private SampleDAO dao = SampleDAOFactory.getSampleDAO();
 //	case3 : Strategy Pattern, 전략 주입자가 필요함. (전략 주입자가 결합력 떠안는다 -> 외부 컨테이너로 사용하여 결합력 이동)
+	@javax.annotation.Resource(name="daoOracle")
 	private SampleDAO dao;
+	
+//	@Autowired
 	public SampleServiceImpl(SampleDAO dao) {
 		super();
 		this.dao = dao;

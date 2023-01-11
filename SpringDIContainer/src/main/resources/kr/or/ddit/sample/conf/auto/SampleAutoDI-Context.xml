@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- annotation 기반으로 등록과 의존관계(주입) 설정 -->
+	<context:annotation-config />
+	
+	<!-- 어느 패키지 대상으로 어노테이션 트레이싱 할 것인가 -->
+	<context:component-scan base-package="kr.or.ddit.sample" use-default-filters="false">
+<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+	</context:component-scan>
+	
+<!-- 	bean 등록시 사용 가능한 어노테이션 -->
+<!-- 	@Component : 범용 유틸리티 bean 등록, 대부분의 어노테이션에 메타 어노테이션으로 활용됨. -->
+<!-- 	@Repository : Persistence Layer bean 등록 -->
+<!-- 	@Service : Business Logic Layer bean 등록 -->
+<!-- 	@Controller(*) : Contoller Layer bean 등록, HandlerMapping에 의해 수집되는 bean. -->
+
+<!-- 	@Configuration (java설정) -->
+
+<!-- 	@ControllerAdvice -->
+
+<!-- 	@RestController -->
+<!-- 	@RestControllerAdvice -->
+
+<!-- 	의존성 주입을 위한 어노테이션 -->
+<!-- 	@Resource : id나 type 등의 주입 조건을 명시적으로 설정 가능. 더 안전, spring 한정x java지원 -->
+<!-- 	@AutoWired : type(class)을 기준으로 주입, 동일 타입의 빈이 두 개 이상 존재하면 예외 발생. -->
+	
+<!-- 	@Inject(*) : @Autowired와 유사하게 동작하나, 대부분의 범용 프레임워크에서 활용 가능함. -->
+
+<!-- 	@Required -->
+</beans>

@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -11,22 +12,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kr.or.ddit.vo.MemoVO;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Repository;
+
+import kr.or.ddit.vo.MemoVO;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Repository
 public class FileSystemMemoDAOimpl implements MemoDAO{
-	private static FileSystemMemoDAOimpl instance;
-	public static FileSystemMemoDAOimpl getInstance() {
-		if(instance == null)
-			instance = new FileSystemMemoDAOimpl();
-		return instance;
-	}
+	@Inject
+	private ApplicationContext context;
 	
-	private File dataBase = new File("d:/memo.dat"); // resource api 사용
-	private Map<Integer, MemoVO> memoTable; // 직렬화 역직렬화 대상
-	
-	private FileSystemMemoDAOimpl(){ //역직렬화 여기서 하기 (DB대신)
+	//init : 생성자가 생성되고 모든 인젝션이 끝난 뒤 수행됨
+	@PostConstruct
+	public void init() {
+		dataBase = context.getResource("file:d:/memos.dat");
+		log.info("리소스 로딩:{}", dataBase);
+		//리소스 찾은 후 수행
 		try(
-			FileInputStream fis = new FileInputStream(dataBase);
+			InputStream fis = dataBase.getInputStream();
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			ObjectInputStream ois = new ObjectInputStream(bis);
 		){
@@ -36,7 +47,11 @@ public class FileSystemMemoDAOimpl implements MemoDAO{
 			this.memoTable = new HashMap<>();
 		}
 	}
-
+	
+//	private File dataBase = new File("d:/memo.dat"); // resource api 사용
+	private Resource dataBase; //container가 그 자체로 resource loader가 된다.
+	private Map<Integer, MemoVO> memoTable; // 직렬화 역직렬화 대상
+	
 	@Override
 	public List<MemoVO> selectMemoList() {
 		return new ArrayList<>(memoTable.values());
@@ -56,7 +71,7 @@ public class FileSystemMemoDAOimpl implements MemoDAO{
 	}
 	private void serializeMemoTable() {
 		try(
-			FileOutputStream fos = new FileOutputStream(dataBase);
+			FileOutputStream fos = new FileOutputStream(dataBase.getFile());
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 		){
 			oos.writeObject(memoTable);

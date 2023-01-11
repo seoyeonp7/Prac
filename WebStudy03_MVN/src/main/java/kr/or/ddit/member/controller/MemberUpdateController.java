@@ -78,7 +78,7 @@ public class MemberUpdateController {
 		if(valid) {
 			ServiceResult result = service.modifyMember(member);
 			switch (result) {
-				case PKDUPLICATED:
+				case INVALIDPASSWORD:
 					req.setAttribute("message", "비밀번호 오류");
 					viewName = "member/memberForm";
 					break;
